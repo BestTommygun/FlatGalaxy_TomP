@@ -9,6 +9,6 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 {
     public interface ICollision
     {
-        void Collide(List<CelestialBody> celestialBodies);
+        List<CelestialBody> Collide(List<CelestialBody> celestialBodies);
     }
 }

@@ -117,12 +117,12 @@ namespace FlatGalaxy_TomP.Controllers
 
                     simulationParams.SetDelta(newTick - oldTick, SimulationSpeed);
                     ModelController.runGameTick(simulationParams);
-                    _collisionDetection.Collide(ModelController.CurMap.celestialBodies);
+                    ModelController.CurMap.celestialBodies =  _collisionDetection.Collide(ModelController.CurMap.celestialBodies);
                     ViewController.drawFrame(ModelController.CurMap.celestialBodies);
 
                     //DEBUG TODO: REMOVE
-                    ALGABfSearch bfSearch = new ALGABfSearch();
-                    bfSearch.BreathfirstSearch(ModelController.CurMap.celestialBodies, "Kobol", "Monea");
+                    //ALGABfSearch bfSearch = new ALGABfSearch();
+                    //bfSearch.ShortestPathFunction<>();
 
                     if(DateTime.UtcNow - newTick < _minTickTime)
                     {

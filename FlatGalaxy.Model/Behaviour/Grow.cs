@@ -6,13 +6,14 @@ namespace FlatGalaxy.Model.Behaviour
 {
     public class Grow : CollisionComponent
     {
-        public override void Collide(CelestialBody celestialBody)
+        public override List<CelestialBody> Collide(CelestialBody celestialBody)
         {
             celestialBody.Radius++;
 
             //TODO: this is ugly fix this
             if(celestialBody.Radius > 20)
                 celestialBody.collision = new Explode();
+            return base.Collide(celestialBody);
         }
     }
 }

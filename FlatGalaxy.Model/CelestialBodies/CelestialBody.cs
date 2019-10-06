@@ -22,10 +22,14 @@ namespace FlatGalaxy.Model
 
         public double VY { get; set; }
 
-        public virtual void onCollision()
+        public virtual List<CelestialBody> onCollision()
         {
+            List<CelestialBody> returnList = new List<CelestialBody>();
             if (collision != null)
-                collision.Collide(this);
+                returnList = collision.Collide(this);
+            else
+                returnList.Add(this);
+            return returnList;
         }
 
         public CollisionComponent collision { get; set; }

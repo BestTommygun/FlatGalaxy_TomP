@@ -11,10 +11,14 @@ namespace FlatGalaxy.Model
     {
         public CollisionComponent nextCollision;
 
-        public virtual void Collide(CelestialBody celestialBody)
+        public virtual List<CelestialBody> Collide(CelestialBody celestialBody)
         {
-            if(nextCollision != null)
-                nextCollision.Collide(celestialBody);
+            List<CelestialBody> returnList = new List<CelestialBody>();
+            if (nextCollision != null)
+                returnList = nextCollision.Collide(celestialBody);
+            else
+                returnList.Add(celestialBody);
+            return returnList;
         }
     }
 }

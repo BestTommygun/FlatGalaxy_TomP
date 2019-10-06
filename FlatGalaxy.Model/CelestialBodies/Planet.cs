@@ -10,9 +10,9 @@ namespace FlatGalaxy.Model
 {
     public class Planet : CelestialBody
     {
-        public override void onCollision()
+        public override List<CelestialBody> onCollision()
         {
-            base.onCollision();
+            return base.onCollision();
         }
 
         public override object Clone()

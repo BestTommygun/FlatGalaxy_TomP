@@ -9,11 +9,11 @@ namespace FlatGalaxy.Model
 {
     public class Blink : CollisionComponent
     {
-        public override void Collide(CelestialBody celestialBody) //maybe list?
+        public override List<CelestialBody> Collide(CelestialBody celestialBody) //maybe list?
         {
             celestialBody.Colour = "Yellow";
 
-            base.Collide(celestialBody);
+            return base.Collide(celestialBody);
         }
     }
 }

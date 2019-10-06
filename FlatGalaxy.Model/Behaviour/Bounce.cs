@@ -9,14 +9,14 @@ namespace FlatGalaxy.Model.Behaviour
     {
         private int bounceCounter = 0;
 
-        public override void Collide(CelestialBody celestialBody)
+        public override List<CelestialBody> Collide(CelestialBody celestialBody)
         {
             celestialBody.VX = -celestialBody.VX;
             celestialBody.VY = - celestialBody.VY;
 
             bounceCounter++;
 
-            base.Collide(celestialBody);
+            return base.Collide(celestialBody);
         }
     }
 }

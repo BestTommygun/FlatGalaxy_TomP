@@ -1,4 +1,5 @@
 ﻿using FlatGalaxy.Model;
+using FlatGalaxy.Model.BreathFirstSSearch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,21 +8,24 @@ using System.Threading.Tasks;
 
 namespace FlatGalaxy_TomP.Controllers
 {
-    /*public class ALGABfSearch
+    public class ALGABfSearch
     {
         //TODO: maybe refactor to return null if not succeeded
         //returns the path taken and if it succeeded or not
-        public Tuple<Dictionary<string, CelestialBody>, bool> BreathfirstSearch(List<CelestialBody> bodies, string point1, string point2)
+        /*
+         * public Tuple<Dictionary<string, CelestialBody>, bool> BreathfirstSearch(List<CelestialBody> bodies, string point1, string point2)
         {
 
             Tuple<Dictionary<string, CelestialBody>, bool> returnTuple;
 
-            if (returnBodies.Last().Key.Equals(point2))
+            if (bodies.Last() != null)
             {
-                returnTuple = new Tuple<Dictionary<string, CelestialBody>, bool>(returnBodies, true);
+                returnTuple = new Tuple<Dictionary<string, CelestialBody>, bool>(bodies.Last(), true);
             }
             else
-                returnTuple = new Tuple<Dictionary<string, CelestialBody>, bool>(returnBodies, false);
+                returnTuple = new Tuple<Dictionary<string, CelestialBody>, bool>(bodies, false);
+
+
             return returnTuple;
         }
         //recursive
@@ -30,12 +34,13 @@ namespace FlatGalaxy_TomP.Controllers
 
             return new Dictionary<string, CelestialBody>();
         }
+        */
 
-        public Func<T, IEnumerable<T>> ShortestPathFunction<T>(<T> graph, CelestialBody start)
+        public Func<T, List<T>> ShortestPathFunction<T>(BFGraph<T> graph, T start) //should be generic for reusability
         {
             var previous = new Dictionary<T, T>();
 
-            var queue = new Queue<CelestialBody>();
+            var queue = new Queue<T>();
             queue.Enqueue(start);
 
             while (queue.Count > 0)
@@ -51,8 +56,8 @@ namespace FlatGalaxy_TomP.Controllers
                 }
             }
 
-            Func<T, IEnumerable<T>> shortestPath = v => {
-                var path = new List<CelestialBody> { };
+            Func<T, List<T>> shortestPath = v => {
+                var path = new List<T> { };
 
                 var current = v;
                 while (!current.Equals(start))
@@ -69,5 +74,5 @@ namespace FlatGalaxy_TomP.Controllers
 
             return shortestPath;
         }
-    }*/
+    }
 }

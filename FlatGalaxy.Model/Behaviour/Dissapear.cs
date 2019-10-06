@@ -6,11 +6,11 @@ namespace FlatGalaxy.Model.Behaviour
 {
     public class Dissapear : CollisionComponent
     {
-        public override void Collide(CelestialBody celestialBody)
+        public override List<CelestialBody> Collide(CelestialBody celestialBody)
         {
             celestialBody = null; //check if this works
 
-            base.Collide(celestialBody);
+            return base.Collide(celestialBody);
         }
     }
 }
