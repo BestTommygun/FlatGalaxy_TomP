@@ -1,4 +1,6 @@
 ﻿using FlatGalaxy.Model;
+using FlatGalaxy.Model.BreathFirstSSearch;
+using FlatGalaxy_TomP.Controllers.Algorithm;
 using FlatGalaxy_TomP.Controllers.collisionDetection;
 using FlatGalaxy_TomP_JohanW.Controllers;
 using FlatGalaxy_TomP_JohanW.Controllers.parsing;
@@ -27,6 +29,7 @@ namespace FlatGalaxy_TomP.Controllers
         private bool _containsGalaxy { get; set; }
         private TimeSpan _minTickTime { get; set; }
         private bool IsPaused { get; set; }
+        private bool Algorithms = true;
 
         public MainController()
         {
@@ -102,9 +105,10 @@ namespace FlatGalaxy_TomP.Controllers
                 {
                     newTick = DateTime.UtcNow;
 
-                    //TODO: quadtree, memento maybe, collision detection (half), keybindings refactor
+                    //TODO: quadtree, memento maybe, keybindings refactor
                     //web loading refactor, botsen gedragsregels
                     //unit testing is 15% van het punt, urgh
+                    //TODO: dat vage factory refactoring ding gebruik dat PLEASE voor http & local
 
                     //ALGA
                     //kortste pad: eigenlijk ding, configureerbare punten in UI?
@@ -117,14 +121,23 @@ namespace FlatGalaxy_TomP.Controllers
 
                     simulationParams.SetDelta(newTick - oldTick, SimulationSpeed);
                     ModelController.runGameTick(simulationParams);
-                    ModelController.CurMap.celestialBodies =  _collisionDetection.Collide(ModelController.CurMap.celestialBodies);
+                    ModelController.CurMap.celestialBodies =  await _collisionDetection.Collide(ModelController.CurMap.celestialBodies);
+
+                    if (Algorithms) //this should only be enabled for the algorithm assignment
+                    {
+                        //TODO: Make an UI element to choose planets
+                        BFSearch bFSearch = new BFSearch();
+                        ModelController.CurMap.celestialBodies = bFSearch
+                            .BreathFirstSearch(
+                                ModelController.CurMap.celestialBodies,
+                                ModelController.CurMap.celestialBodies[0],
+                                ModelController.CurMap.celestialBodies[1]
+                            );
+                    }
+
                     ViewController.drawFrame(ModelController.CurMap.celestialBodies);
 
-                    //DEBUG TODO: REMOVE
-                    //ALGABfSearch bfSearch = new ALGABfSearch();
-                    //bfSearch.ShortestPathFunction<>();
-
-                    if(DateTime.UtcNow - newTick < _minTickTime)
+                    if (DateTime.UtcNow - newTick < _minTickTime)
                     {
                         await Task.Delay(_minTickTime);
                     }

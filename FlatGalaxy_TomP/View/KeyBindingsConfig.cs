@@ -35,19 +35,19 @@ namespace FlatGalaxy_TomP.View
 
         private void SlowerKey_Click(object sender, EventArgs e)
         {
-            FasterKey.Text = "Press any key to change the " + KeyBinds["slower"].ToString() + " keybinding...";
+            SlowerKey.Text = "Press any key to change the " + KeyBinds["slower"].ToString() + " keybinding...";
             toBeChangedLabel = "slower";
         }
 
         private void PauseKey_Click(object sender, EventArgs e)
         {
-            FasterKey.Text = "Press any key to change the " + KeyBinds["pause"].ToString() + " keybinding...";
+            PauseKey.Text = "Press any key to change the " + KeyBinds["pause"].ToString() + " keybinding...";
             toBeChangedLabel = "pause";
         }
 
         private void GoBack5Key_Click(object sender, EventArgs e)
         {
-            FasterKey.Text = "Press any key to change the " + KeyBinds["back"].ToString() + " keybinding...";
+            GoBack5Key.Text = "Press any key to change the " + KeyBinds["back"].ToString() + " keybinding...";
             toBeChangedLabel = "back";
         }
 
@@ -63,17 +63,17 @@ namespace FlatGalaxy_TomP.View
                 case "slower":
                     KeyBinds["slower"] = e.KeyData;
                     toBeChangedLabel = "";
-                    FasterKey.Text = KeyBinds["slower"].ToString();
+                    SlowerKey.Text = KeyBinds["slower"].ToString();
                     break;
                 case "pause":
                     KeyBinds["pause"] = e.KeyData;
                     toBeChangedLabel = "";
-                    FasterKey.Text = KeyBinds["pause"].ToString();
+                    PauseKey.Text = KeyBinds["pause"].ToString();
                     break;
                 case "back":
                     KeyBinds["back"] = e.KeyData;
                     toBeChangedLabel = "";
-                    FasterKey.Text = KeyBinds["back"].ToString();
+                    GoBack5Key.Text = KeyBinds["back"].ToString();
                     break;
                 default:
                     toBeChangedLabel = "";

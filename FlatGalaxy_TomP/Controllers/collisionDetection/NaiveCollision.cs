@@ -10,60 +10,82 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 {
     public class NaiveCollision : ICollision
     {
-        public List<CelestialBody> Collide(List<CelestialBody> celestialBodies)
+        public async Task<List<CelestialBody>> Collide(List<CelestialBody> celestialBodies)
         {
-            if (celestialBodies.Count > 0)
-            {
-                for (int i = 0; i < celestialBodies.Count; i++)
-                {
-                    var curBody = celestialBodies[i];
-                    for (int j = 0; j < celestialBodies.Count; j++)
-                    {
-                        var nextBody = celestialBodies[j];
-                        if (nextBody != curBody)
-                        {
-                            if (j == 27 && i == 17)
-                                j = 27;
-                            //pak wortel van C^2 en kijk of dit kleiner is dan de radiussen bij elkaar
-                            //opgeteld (via pythagoras krijg je de afstand van een cirkel)
-                            int deltaX = (int)curBody.X - (int)nextBody.X;
-                            int deltaY = (int)curBody.Y - (int)nextBody.Y;
-                            int distSq = (int)Math.Sqrt((int)Math.Pow(deltaX, 2) + (int)Math.Pow(deltaY, 2));
-                            int sumRad = (int)curBody.Radius + (int)nextBody.Radius;
-                            if (distSq <= sumRad)
-                            {
-                                var IList = curBody.onCollision();
-                                var JList = nextBody.onCollision();
+            List<CelestialBody> returnBodies = celestialBodies.ToList();
 
-                                if(IList.Count > 1)
-                                {
-                                    celestialBodies = addRemnants(celestialBodies, IList);
-                                }
-                                if(JList.Count > 1)
-                                {
-                                    celestialBodies = addRemnants(celestialBodies, JList);
-                                }
-                                curBody = IList.FirstOrDefault();
-                                nextBody = JList.FirstOrDefault();
-                                if (curBody == null) break;
-                                if (nextBody == null) j++;
-                            }
+           if(celestialBodies.Count > 0)
+           {
+                var detectedBodies = _detectCollision(celestialBodies);
+
+                if (detectedBodies.Count > 0)
+                {
+                    var collidedBodies = await _Collide(detectedBodies, celestialBodies);
+
+                    foreach (CelestialBody collidedBody in collidedBodies.ToList())
+                    {
+                        int collidedBodyIndex = returnBodies.IndexOf(collidedBody);
+                        string fjdnkg;
+                        if (collidedBody.Name != null &&  collidedBody.Name.Equals("Namek"))
+                             fjdnkg = "asfdfds";
+
+                        if (collidedBodyIndex == -1)
+                            returnBodies.Add(collidedBody);
+                        else
+                        {
+                            if (collidedBody.ShouldDissapear)
+                                returnBodies.Remove(collidedBody);
+                            else
+                                returnBodies[collidedBodyIndex] = collidedBody;
+                            
                         }
-                        celestialBodies.RemoveAll(cb => cb == null);
+                    }
+                }
+
+           }
+            return returnBodies;
+        }
+
+        private List<CelestialBody> _detectCollision(List<CelestialBody> bodies)
+        {
+            List<CelestialBody> collidingBodies = new List<CelestialBody>();
+
+            foreach (CelestialBody curBody in bodies)
+            {
+                foreach (CelestialBody nextBody in bodies)
+                {
+
+                    if (curBody != nextBody)
+                    {
+                        int deltaX = (int)curBody.X - (int)nextBody.X;
+                        int deltaY = (int)curBody.Y - (int)nextBody.Y;
+                        int distSq = (int)Math.Sqrt((int)Math.Pow(deltaX, 2) + (int)Math.Pow(deltaY, 2));
+                        int sumRad = (int)curBody.Radius + (int)nextBody.Radius;
+                        if (distSq <= sumRad)
+                        {
+                            if(!collidingBodies.Contains(curBody))
+                                collidingBodies.Add(curBody);
+                            if(!collidingBodies.Contains(nextBody))
+                                collidingBodies.Add(nextBody);
+                        }
                     }
                 }
             }
-            return celestialBodies;
+            return collidingBodies;
         }
 
-        private List<CelestialBody> addRemnants(List<CelestialBody> celestialBodies, List<CelestialBody> remnantList)
+        private async Task<List<CelestialBody>> _Collide(List<CelestialBody> collidingBodies, List<CelestialBody> allBodies)
         {
-            foreach (CelestialBody remnant in remnantList)
+            List<CelestialBody> returningBodies = allBodies.ToList();
+
+            foreach (CelestialBody celestialBody in collidingBodies)
             {
-                celestialBodies.Add(remnant);
+                var newBodies = await celestialBody.onCollision();
+
+                returningBodies.AddRange(newBodies);
             }
 
-            return celestialBodies;
+            return returningBodies;
         }
     }
 }

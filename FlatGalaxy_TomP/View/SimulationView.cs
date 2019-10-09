@@ -45,8 +45,11 @@ namespace FlatGalaxy_TomP
                 {
                     foreach (string neighbour in body.Neighbours)
                     {
+                        Pen pen = new Pen(Color.Cyan);
+                        if (body.IsMarked && bodies[neighbour].IsMarked)
+                            pen = new Pen(Color.Red);
                         e.Graphics.DrawLine(
-                            new Pen(Color.Cyan),
+                            pen,
                             (float)body.X,
                             (float)body.Y,
                             (float)bodies[neighbour].X,

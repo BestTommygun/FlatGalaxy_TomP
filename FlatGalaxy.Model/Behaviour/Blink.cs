@@ -9,11 +9,16 @@ namespace FlatGalaxy.Model
 {
     public class Blink : CollisionComponent
     {
-        public override List<CelestialBody> Collide(CelestialBody celestialBody) //maybe list?
+        string originalColour;
+        public async override Task<List<CelestialBody>> Collide(CelestialBody celestialBody) //TODO: IT DOESNT FUCKING BLINK
         {
-            celestialBody.Colour = "Yellow";
+            if (originalColour == null) originalColour = celestialBody.Colour;
 
-            return base.Collide(celestialBody);
+            celestialBody.Colour = "Yellow";
+            //await Task.Delay(100);
+            celestialBody.Colour = originalColour;
+
+            return await base.Collide(celestialBody);
         }
     }
 }

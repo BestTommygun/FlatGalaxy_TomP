@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using FlatGalaxy.Model;
 
 namespace FlatGalaxy.Model.Behaviour
@@ -9,14 +10,18 @@ namespace FlatGalaxy.Model.Behaviour
     {
         private int bounceCounter = 0;
 
-        public override List<CelestialBody> Collide(CelestialBody celestialBody)
+        public async override Task<List<CelestialBody>> Collide(CelestialBody celestialBody)
         {
-            celestialBody.VX = -celestialBody.VX;
-            celestialBody.VY = - celestialBody.VY;
+            if(bounceCounter < 5)
+            {
+                celestialBody.VX = -celestialBody.VX;
+                celestialBody.VY = -celestialBody.VY;
 
-            bounceCounter++;
+                bounceCounter++;
+            }
+            celestialBody.collision = new Blink();
 
-            return base.Collide(celestialBody);
+            return await base.Collide(celestialBody);
         }
     }
 }

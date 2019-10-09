@@ -22,11 +22,11 @@ namespace FlatGalaxy.Model
 
         public double VY { get; set; }
 
-        public virtual List<CelestialBody> onCollision()
+        public async virtual Task<List<CelestialBody>> onCollision()
         {
             List<CelestialBody> returnList = new List<CelestialBody>();
             if (collision != null)
-                returnList = collision.Collide(this);
+                returnList = await collision.Collide(this);
             else
                 returnList.Add(this);
             return returnList;
@@ -34,9 +34,13 @@ namespace FlatGalaxy.Model
 
         public CollisionComponent collision { get; set; }
 
+        public bool ShouldDissapear = false;
+
         public abstract object Clone();
 
         public string Colour { get; set; }
+
+        public bool IsMarked { get; set; }
 
     }
 }

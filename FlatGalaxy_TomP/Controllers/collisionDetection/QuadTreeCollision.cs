@@ -9,7 +9,7 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 {
     public class QuadTreeCollision : ICollision
     {
-        public List<CelestialBody> Collide(List<CelestialBody> celestialBodies)
+        public async Task<List<CelestialBody>> Collide(List<CelestialBody> celestialBodies)
         {
             throw new NotImplementedException(); //TODO: quadtree collision
         }
