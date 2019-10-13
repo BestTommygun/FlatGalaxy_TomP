@@ -23,6 +23,5 @@ namespace FlatGalaxy.Model
             DeltaTime = TimeSpan.FromMilliseconds(timeSpan.Milliseconds * speed);
             TotalTime += timeSpan;
         }
-
     }
 }

@@ -14,10 +14,12 @@ namespace FlatGalaxy.Model
         public async virtual Task<List<CelestialBody>> Collide(CelestialBody celestialBody)
         {
             List<CelestialBody> returnList = new List<CelestialBody>();
+
             if (nextCollision != null)
                 returnList = await nextCollision.Collide(celestialBody);
             else
                 returnList.Add(celestialBody);
+
             return returnList;
         }
     }

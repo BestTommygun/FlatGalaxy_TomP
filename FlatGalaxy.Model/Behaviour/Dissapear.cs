@@ -9,7 +9,7 @@ namespace FlatGalaxy.Model.Behaviour
     {
         public async override Task<List<CelestialBody>> Collide(CelestialBody celestialBody)
         {
-            celestialBody.ShouldDissapear = true; //check if this works
+            celestialBody.ShouldDissapear = true;
 
             return await base.Collide(celestialBody);
         }

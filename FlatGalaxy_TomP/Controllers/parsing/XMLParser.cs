@@ -16,7 +16,6 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
         {         
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.Async = true;
-            //file.Seek(0, SeekOrigin.Begin);
 
             List<ParserData> returningData = new List<ParserData>();
 
@@ -25,14 +24,14 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
                 while (reader.Read() && reader.Name.ToLower() != "galaxy") { } //put here so the code ignores anything that isnt xml
                 while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
                 {
-                    reader.MoveToContent(); //reader ignores whitespaces and endlines
+                    reader.MoveToContent(); //Make reader ignore whitespaces and endlines
                     ParserData parserData = new ParserData();
                     parserData.Neighbours = new List<string>();
                     parserData.Type = reader.Name;
 
                     while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
                     {
-                        reader.MoveToContent(); //reader ignores whitespaces and endlines
+                        reader.MoveToContent(); //Make reader ignore whitespaces and endlines
 
                         switch (reader.Name.ToLower())
                         {
@@ -90,7 +89,6 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
                                     switch (reader.Name)
                                     {
                                         case "planet":
-                                            Console.WriteLine("adding planet");
                                             parserData.Neighbours.Add(reader.ReadElementContentAsString());
                                             break;
                                         default:

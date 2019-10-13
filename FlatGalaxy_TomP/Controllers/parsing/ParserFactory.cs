@@ -1,5 +1,4 @@
 ﻿using FlatGalaxy.Model;
-using FlatGalaxy_TomP.Controllers.parsing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
 {
     public class ParserFactory
     {
-        public IParser returnParser(String file) //TODO: use the factory
+        public IParser returnParser(string file)
         {
             if (file.Length > 1)
             {
@@ -18,22 +17,22 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
                 string[] splitText = file.Split('.');
                 string fileEnding = splitText.LastOrDefault().Substring(0, 3);
 
-                if (fileEnding == "xml") return xmlParser();
-                else if (fileEnding == "csv") return csvParser();
-                else throw new ArgumentException();
+                return Create(fileEnding);
             }
             else throw new ArgumentNullException();
         }
 
-        internal IParser Create(string fileEnding)
+        IParser Create(string fileEnding)
         {
-            if (fileEnding.Length > 1)
+            switch (fileEnding)
             {
-                if (fileEnding == "xml") return xmlParser();
-                else if (fileEnding == "csv") return csvParser();
-                else throw new ArgumentException();
+                case "xml":
+                    return xmlParser();
+                case "csv":
+                    return csvParser();
+                default:
+                    return null;
             }
-            else throw new ArgumentNullException();
         }
 
         public IParser xmlParser ()

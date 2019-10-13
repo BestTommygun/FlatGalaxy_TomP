@@ -8,18 +8,26 @@ namespace FlatGalaxy.Model.Behaviour
 {
     public class Bounce : CollisionComponent
     {
-        private int bounceCounter = 0;
+        private int bounceCounter;
+
+        public Bounce()
+        {
+            bounceCounter = 0;
+        }
 
         public async override Task<List<CelestialBody>> Collide(CelestialBody celestialBody)
         {
-            if(bounceCounter < 5)
+            if(bounceCounter < 5 && !celestialBody.ShouldDissapear)
             {
                 celestialBody.VX = -celestialBody.VX;
                 celestialBody.VY = -celestialBody.VY;
 
                 bounceCounter++;
             }
-            celestialBody.collision = new Blink();
+            else
+            {
+               celestialBody.collision = new Blink();
+            }
 
             return await base.Collide(celestialBody);
         }

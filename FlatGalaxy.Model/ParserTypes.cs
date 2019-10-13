@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FlatGalaxy.Model
 {
-    public enum Parsers
+    public enum Parsers //TODO: use this
     {
         CSV,
         XML,

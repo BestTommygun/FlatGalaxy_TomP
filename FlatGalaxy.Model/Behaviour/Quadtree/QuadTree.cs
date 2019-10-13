@@ -4,7 +4,8 @@ using System.Text;
 
 namespace FlatGalaxy.Model.Behaviour.Quadtree
 {
-    class QuadTree
+    public class QuadTree
     {
+
     }
 }

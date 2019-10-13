@@ -49,7 +49,15 @@ namespace FlatGalaxy_TomP.Controllers
             ViewController.runView();
         }
 
-        public List<ParserData> loadWebGalaxy(string adress) //TODO: should probably use a pattern for this
+        private List<ParserData> loadGalaxy(string file)
+        {
+            if (ViewController.isWebFile())
+                return loadLocalGalaxy(file);
+            else
+                return loadWebGalaxy(file);
+        }
+
+        private List<ParserData> loadWebGalaxy(string adress) //TODO: should probably use a pattern for this
         {
             var parser = ParserFactory.returnParser(adress);
             WebClient client = new WebClient();
@@ -57,7 +65,7 @@ namespace FlatGalaxy_TomP.Controllers
             return parser.Parse(stream);
         }
 
-        public List<ParserData> loadLocalGalaxy(string file)
+        private List<ParserData> loadLocalGalaxy(string file)
         {
             var parser = ParserFactory.returnParser(file);
             FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read);
@@ -69,9 +77,11 @@ namespace FlatGalaxy_TomP.Controllers
             DateTime oldTick = DateTime.UtcNow;
             DateTime newTick = DateTime.UtcNow;
             SimulationParams simulationParams = new SimulationParams(new TimeSpan(), new TimeSpan());
+            GalaxyBuilder galaxyBuilder = new GalaxyBuilder();
 
+            InputController = new InputController();
+            _collisionDetection = new NaiveCollision();
             IsPaused = false;
-
 
             while (true)
             {
@@ -79,17 +89,9 @@ namespace FlatGalaxy_TomP.Controllers
 
                 if (file != null && file.Length > 0)
                 {
-                    List<ParserData> parserData;
-                    if (ViewController.isWebFile())
-                        parserData = loadLocalGalaxy(file);
-                    else
-                        parserData = loadWebGalaxy(file);
-                    GalaxyBuilder galaxyBuilder = new GalaxyBuilder(); //hoeft niet opnieuw
-                    Map Galaxy = galaxyBuilder.buildGalaxy(parserData);
+                    Map Galaxy = galaxyBuilder.buildGalaxy(loadLocalGalaxy(file));
 
                     ModelController = new ModelController(Galaxy);
-                    InputController = new InputController(); //hoeft niet opnieuw
-                    _collisionDetection = new NaiveCollision(); //hoeft niet opnieuw
 
                     simulationParams.TotalTime = TimeSpan.Zero;
                     _containsGalaxy = true;
@@ -100,13 +102,12 @@ namespace FlatGalaxy_TomP.Controllers
                     ViewController.setSpeedText("X" + SimulationSpeed);
                 }
 
-                //simLoop
+                //simulationLoop
                 while (_containsGalaxy && !ViewController.MainView.HasFile)
                 {
                     newTick = DateTime.UtcNow;
 
-                    //TODO: quadtree, memento maybe, keybindings refactor
-                    //web loading refactor, botsen gedragsregels
+                    //TODO: keybindings refactor, blink gedrag werkend krijgen
                     //unit testing is 15% van het punt, urgh
                     //TODO: dat vage factory refactoring ding gebruik dat PLEASE voor http & local
 
@@ -154,7 +155,8 @@ namespace FlatGalaxy_TomP.Controllers
                 await Task.Delay(_minTickTime);
             }
         }
-        public void inputControl(string key)
+
+        private void inputControl(string key)
         {
             switch (key)
             {

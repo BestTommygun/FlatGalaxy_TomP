@@ -12,11 +12,14 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
 
         public string Name { get; set; }
 
-        public double X { get; set; }
-        public double Y { get; set; }
         public int Radius { get; set; }
 
+        public double X { get; set; }
+
+        public double Y { get; set; }
+
         public double VX { get; set; }
+
         public double VY { get; set; }
 
         public List<string> Neighbours { get; set; }

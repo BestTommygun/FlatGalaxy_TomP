@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FlatGalaxy.Model
 {
-    public abstract class CelestialBody : ICloneable //misschien interface ipv abstract
+    public abstract class CelestialBody : ICloneable
     {
         public string Name { get; set; }
 
@@ -25,10 +26,12 @@ namespace FlatGalaxy.Model
         public async virtual Task<List<CelestialBody>> onCollision()
         {
             List<CelestialBody> returnList = new List<CelestialBody>();
+
             if (collision != null)
                 returnList = await collision.Collide(this);
             else
                 returnList.Add(this);
+
             return returnList;
         }
 
@@ -41,6 +44,5 @@ namespace FlatGalaxy.Model
         public string Colour { get; set; }
 
         public bool IsMarked { get; set; }
-
     }
 }

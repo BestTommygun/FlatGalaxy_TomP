@@ -6,7 +6,6 @@ namespace FlatGalaxy.Model.BreathFirstSSearch
 {
     public class Vertex
     {
-        public Vertex() { }
         public Vertex(string name, List<string> vertices)
         {
             this.Name = name;

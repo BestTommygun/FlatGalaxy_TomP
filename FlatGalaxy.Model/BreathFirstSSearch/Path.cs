@@ -13,6 +13,7 @@ namespace FlatGalaxy.Model.BreathFirstSSearch
         {
             _vertices = new List<Vertex>();
         }
+
         public Path(Path path)
         {
             _vertices = path.getPath().ToList();

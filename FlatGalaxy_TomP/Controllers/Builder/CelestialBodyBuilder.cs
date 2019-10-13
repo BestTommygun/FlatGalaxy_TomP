@@ -12,9 +12,15 @@ namespace FlatGalaxy_TomP_JohanW.Controllers
     {
         public CelestialBody BuildCelestialBody(ParserData parserData)
         {
-            if (parserData.Type.ToLower() == "planet") return BuildPlanet(parserData);
-            else if (parserData.Type.ToLower() == "asteroid") return BuildAstroid(parserData);
-            return new Astroid();
+            switch (parserData.Type.ToLower())
+            {
+                case "planet":
+                    return BuildPlanet(parserData);
+                case "asteroid":
+                    return BuildAstroid(parserData);
+                default:
+                    return new Astroid();
+            }
         }
 
         private Planet BuildPlanet(ParserData parserData)
@@ -23,11 +29,11 @@ namespace FlatGalaxy_TomP_JohanW.Controllers
             {
                 Name = parserData.Name,
                 Radius = parserData.Radius,
+                Colour = parserData.Colour,
                 X = parserData.X,
                 Y = parserData.Y,
                 VX = parserData.VX,
                 VY = parserData.VY,
-                Colour = parserData.Colour,
                 Neighbours = parserData.Neighbours,
                 collision = returnCollisionComponent(parserData.OnCollision)
             };
@@ -41,13 +47,13 @@ namespace FlatGalaxy_TomP_JohanW.Controllers
             {
                 Neighbours = new List<string>(),
                 Radius = parserData.Radius,
+                Colour = parserData.Colour,
                 X = parserData.X,
                 Y = parserData.Y,
                 VX = parserData.VX,
                 VY = parserData.VY,
-                Colour = parserData.Colour,
                 collision = returnCollisionComponent(parserData.OnCollision)
-        };
+            };
 
             return returningAstroid;
         }

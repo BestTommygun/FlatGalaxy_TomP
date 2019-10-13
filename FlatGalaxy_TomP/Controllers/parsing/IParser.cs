@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
 {
-    public interface IParser //TODO: implement http calls, make factory generic somehow
+    public interface IParser
     {
         List<ParserData> Parse(Stream file); //this method returns the data from an input in string format
     }

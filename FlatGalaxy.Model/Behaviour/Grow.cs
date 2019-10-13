@@ -13,6 +13,7 @@ namespace FlatGalaxy.Model.Behaviour
 
            if(celestialBody.Radius > 20)
                 celestialBody.collision = new Explode();
+
             return await base.Collide(celestialBody);
         }
     }

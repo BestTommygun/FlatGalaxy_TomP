@@ -22,7 +22,7 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
 
                 List<ParserData> parserData = new List<ParserData>();
                 string[] headerFields = parser.ReadFields(); // read header and validate
-                if (headerFields.Length == 10 
+                if (headerFields.Length == 10
                     && headerFields[0].ToLower().Equals("name")
                     && headerFields[1].ToLower().Equals("type")
                     && headerFields[2].ToLower().Equals("x")
@@ -33,9 +33,14 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
                     && headerFields[7].ToLower().Equals("radius")
                     && headerFields[8].ToLower().Equals("color")
                     && headerFields[9].ToLower().Equals("oncollision"))
+                {
                     fileIsValid = true;
+                }
                 else
+                {
                     throw new FormatException();
+                }
+
                     //process row
                 while (!parser.EndOfData && fileIsValid)
                 {

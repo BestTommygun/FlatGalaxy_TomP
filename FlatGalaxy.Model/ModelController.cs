@@ -21,7 +21,7 @@ namespace FlatGalaxy.Model
             TimeStamps.Add(time, (Map)curMap.Clone());
         }
 
-        public void mapBackFiveSeconds() //backFive geen params?
+        public void mapBackFiveSeconds()
         {
             var timestamp = TimeStamps.LastOrDefault().Key - TimeSpan.FromSeconds(5);
 
@@ -29,22 +29,29 @@ namespace FlatGalaxy.Model
             {
                 TimeStamps = TimeStamps.Where(k => k.Key <= timestamp).ToList().ToDictionary(k => k.Key, v => v.Value);
                 CurMap = TimeStamps.LastOrDefault().Value;
-                //time stuff
             }
         }
 
-        public void newTimeStamp(DateTime time)//TODO: voor volle punt: denk aan efficiente maanier om memory leaks tegen te gaan
+        public void newTimeStamp(DateTime time)
         {
+            
+            if(TimeStamps.Count > 10000) //20 minuten
+            {
+                //remove all elements except for the first that exceed 10000
+                var list = TimeStamps.ToList();
+                list.RemoveRange(1, list.Count - 10000); //we want to keep the first element so you can still go back
+                TimeStamps = list.ToDictionary(k => k.Key, v => v.Value);
+                Console.WriteLine("Edited map to contain {0} items...", TimeStamps.Count);
+            }
+
             Console.WriteLine("saved {0} items", CurMap.celestialBodies.Count);
-            TimeStamps.Add(time, (Map)CurMap.Clone()); //TODO: denk na over protype object dat opgeslagen word ipv map voor geheugen bewarens
+            TimeStamps.Add(time, (Map)CurMap.Clone());
         }
 
         public void runGameTick(SimulationParams simulationParams)
         {
             foreach (CelestialBody celestialBody in CurMap.celestialBodies)
             {
-                //check for collision here
-                var hiMom = celestialBody.VX * simulationParams.DeltaTime.TotalSeconds;
                 celestialBody.X += celestialBody.VX * simulationParams.DeltaTime.TotalSeconds;
                 celestialBody.Y += celestialBody.VY * simulationParams.DeltaTime.TotalSeconds;
 

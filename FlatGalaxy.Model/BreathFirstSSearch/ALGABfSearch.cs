@@ -27,9 +27,7 @@ namespace FlatGalaxy_TomP.Controllers
                 Path path = queueItem.Item2;
 
                 if (curBody.Name.Equals(goal.Name))
-                {
                     return path;
-                }
 
                 foreach (string vertex in curBody.Vertices)
                 {

@@ -58,7 +58,6 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\parsing\CSVParser.cs" />
     <Compile Include="Controllers\parsing\IParser.cs" />
-    <Compile Include="Controllers\parsing\Parser.cs" />
     <Compile Include="Controllers\parsing\ParserData.cs" />
     <Compile Include="Controllers\parsing\ParserFactory.cs" />
     <Compile Include="Controllers\parsing\XMLParser.cs" />

@@ -25,9 +25,6 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
                     foreach (CelestialBody collidedBody in collidedBodies.ToList())
                     {
                         int collidedBodyIndex = returnBodies.IndexOf(collidedBody);
-                        string fjdnkg;
-                        if (collidedBody.Name != null &&  collidedBody.Name.Equals("Namek"))
-                             fjdnkg = "asfdfds";
 
                         if (collidedBodyIndex == -1)
                             returnBodies.Add(collidedBody);
@@ -41,7 +38,6 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
                         }
                     }
                 }
-
            }
             return returnBodies;
         }
@@ -54,7 +50,6 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
             {
                 foreach (CelestialBody nextBody in bodies)
                 {
-
                     if (curBody != nextBody)
                     {
                         int deltaX = (int)curBody.X - (int)nextBody.X;
