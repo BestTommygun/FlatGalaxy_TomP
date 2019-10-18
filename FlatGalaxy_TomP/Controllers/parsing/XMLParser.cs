@@ -21,7 +21,7 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
 
             using (XmlReader reader = XmlReader.Create(file, settings))
             {
-                while (reader.Read() && reader.Name.ToLower() != "galaxy") { } //put here so the code ignores anything that isnt xml
+                while (reader.Read() && reader.Name.ToLower() != "galaxy") { } //reader ignores everything before the starting element
                 while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
                 {
                     reader.MoveToContent(); //Make reader ignore whitespaces and endlines
@@ -31,7 +31,7 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
 
                     while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
                     {
-                        reader.MoveToContent(); //Make reader ignore whitespaces and endlines
+                        reader.MoveToContent();
 
                         switch (reader.Name.ToLower())
                         {
@@ -111,6 +111,7 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
                     returningData.Add(parserData);
                 }
             }
+
             return returningData;
         }
     }

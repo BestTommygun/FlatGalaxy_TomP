@@ -7,11 +7,11 @@ namespace FlatGalaxy.Model.Behaviour
 {
     public class Dissapear : CollisionComponent
     {
-        public async override Task<List<CelestialBody>> Collide(CelestialBody celestialBody)
+        public override List<CelestialBody> Collide(CelestialBody celestialBody)
         {
             celestialBody.ShouldDissapear = true;
 
-            return await base.Collide(celestialBody);
+            return base.Collide(celestialBody);
         }
     }
 }

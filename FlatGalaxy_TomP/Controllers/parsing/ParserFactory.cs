@@ -13,7 +13,6 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
         {
             if (file.Length > 1)
             {
-                file.ToLower();
                 string[] splitText = file.Split('.');
                 string fileEnding = splitText.LastOrDefault().Substring(0, 3);
 

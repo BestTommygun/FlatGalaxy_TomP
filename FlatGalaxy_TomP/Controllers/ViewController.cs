@@ -12,7 +12,17 @@ namespace FlatGalaxy_TomP.Controllers
     public class ViewController
     {
         public MainView MainView { get; set; }
-        public Keys Key { get; set; }
+        private Keys Key { get; set; }
+
+        public List<Rectangle> bounds {
+            get { return MainView.Rectangles; }
+            set { MainView.Rectangles = value; }
+        }
+        public bool IsQuadTree
+        {
+            get { return MainView.IsQuadTree; }
+            set { MainView.IsQuadTree = value; }
+        }
 
         public ViewController(Dictionary<string, Keys> KeyBindings)
         {
@@ -32,14 +42,13 @@ namespace FlatGalaxy_TomP.Controllers
 
         public string hasFile()
         {
-            if (MainView.HasFile) return MainView.File;
+            if (MainView.File != null && MainView.File.Length > 0) return MainView.File;
             return null;
         }
 
         public void resetFile()
         {
             MainView.File = null;
-            MainView.HasFile = false;
         }
 
         public void setSpeedText(string text)

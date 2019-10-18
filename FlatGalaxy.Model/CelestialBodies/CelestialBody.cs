@@ -23,12 +23,12 @@ namespace FlatGalaxy.Model
 
         public double VY { get; set; }
 
-        public async virtual Task<List<CelestialBody>> onCollision()
+        public virtual List<CelestialBody> onCollision()
         {
             List<CelestialBody> returnList = new List<CelestialBody>();
 
             if (collision != null)
-                returnList = await collision.Collide(this);
+                returnList = collision.Collide(this);
             else
                 returnList.Add(this);
 

@@ -41,7 +41,7 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
                     throw new FormatException();
                 }
 
-                    //process row
+                //process row
                 while (!parser.EndOfData && fileIsValid)
                 {
                     string[] fields = parser.ReadFields();
@@ -63,6 +63,7 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
                         });
                     }
                 }
+
                 return parserData;
             }
         }

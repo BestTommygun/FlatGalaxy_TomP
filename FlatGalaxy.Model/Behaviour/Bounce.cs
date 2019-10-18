@@ -15,7 +15,7 @@ namespace FlatGalaxy.Model.Behaviour
             bounceCounter = 0;
         }
 
-        public async override Task<List<CelestialBody>> Collide(CelestialBody celestialBody)
+        public override List<CelestialBody> Collide(CelestialBody celestialBody)
         {
             if(bounceCounter < 5 && !celestialBody.ShouldDissapear)
             {
@@ -29,7 +29,7 @@ namespace FlatGalaxy.Model.Behaviour
                celestialBody.collision = new Blink();
             }
 
-            return await base.Collide(celestialBody);
+            return base.Collide(celestialBody);
         }
     }
 }

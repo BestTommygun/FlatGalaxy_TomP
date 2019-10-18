@@ -21,6 +21,53 @@ namespace FlatGalaxy.Model
             TimeStamps.Add(time, (Map)curMap.Clone());
         }
 
+        public void removeAstroids(int amount)
+        {
+            Random random = new Random();
+
+            var astroids = CurMap.celestialBodies.Where(n => n.Name == null).ToList();
+            int index = amount;
+            while(index > 0)
+            {
+                if(astroids.Count > 0)
+                astroids.RemoveAt(random.Next(0, astroids.Count - 1));
+                index--;
+            }
+            for (int i = 0; i < amount; i++)
+            {
+                CurMap.celestialBodies.Remove(CurMap.celestialBodies.Where(cb => !astroids.Contains(cb) && cb.Name == null).FirstOrDefault());
+            }
+        }
+
+        public void newAstroids(int amount)
+        {
+            Random random = new Random();
+            List<CelestialBody> newBodies = new List<CelestialBody>();
+            while (amount > 0)
+            {
+                //random numbers for the new astroid
+                double newVX = random.NextDouble() * 2 + 0.5; //0.5 - 2.5
+                double newVY = random.NextDouble() * 2 + 0.5; //0.5 - 2.5
+                double newR = random.NextDouble() * 2 + 1;    //1 - 3
+                double newX = random.NextDouble() * 800;      // 0 - 800
+                double newY = random.NextDouble() * 600;      // 0 - 600
+                Astroid newAstroid = new Astroid()
+                {
+                    Neighbours = new List<string>(),
+                    Radius = newR,
+                    X = newX,
+                    Y = newY,
+                    VX = newVX,
+                    VY = newVY,
+                    Colour = "black",
+                    collision = new Behaviour.Explode()
+                };
+                newBodies.Add(newAstroid);
+                amount--;
+            }
+            CurMap.celestialBodies.AddRange(newBodies);
+        }
+
         public void mapBackFiveSeconds()
         {
             var timestamp = TimeStamps.LastOrDefault().Key - TimeSpan.FromSeconds(5);
@@ -59,7 +106,8 @@ namespace FlatGalaxy.Model
                 {
                     celestialBody.VX = -celestialBody.VX;
                     celestialBody.X = 800 - celestialBody.Radius;
-                }else if (celestialBody.X < 0 + celestialBody.Radius)
+                }
+                else if (celestialBody.X < 0 + celestialBody.Radius)
                 {
                     celestialBody.VX = -celestialBody.VX;
                     celestialBody.X = celestialBody.Radius;

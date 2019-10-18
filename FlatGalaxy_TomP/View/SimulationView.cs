@@ -14,6 +14,7 @@ namespace FlatGalaxy_TomP
     public partial class SimulationView : UserControl
     {
         public List<CelestialBody> CelestialBodies { get; set; }
+        public List<Rectangle> Rectangles { get; set; }
 
         public SimulationView()
         {
@@ -45,9 +46,16 @@ namespace FlatGalaxy_TomP
                 {
                     foreach (string neighbour in body.Neighbours)
                     {
+                        if(body.IsMarked)
+                        {
+                            Console.WriteLine(body.Name + " is marked");
+                        }
+
                         Pen pen = new Pen(Color.Cyan);
                         if (body.IsMarked && bodies[neighbour].IsMarked)
+                        {
                             pen = new Pen(Color.Red);
+                        }
                         e.Graphics.DrawLine(
                             pen,
                             (float)body.X,
@@ -63,9 +71,11 @@ namespace FlatGalaxy_TomP
                 {
                     e.Graphics.FillEllipse(
                         new SolidBrush(
-                            body.Colour == null || body.Colour.Equals("grey")
-                                ? Color.Gray 
-                                : Color.FromName(body.Colour)),
+                            body.IsMarked  
+                                ? Color.Red
+                                : body.Colour == null || body.Colour.Equals("grey")
+                                    ? Color.Gray 
+                                    : Color.FromName(body.Colour)),
                         new RectangleF(
                             (float)(body.X - body.Radius),
                             (float)(body.Y - body.Radius),
@@ -74,7 +84,17 @@ namespace FlatGalaxy_TomP
                             )
                         );
                 }
-                //TODO: draw collision cross cool thingies here
+
+                if(Rectangles != null && Rectangles.Count > 0)
+                {
+                    foreach (Rectangle rectangle in Rectangles)
+                    {
+                        e.Graphics.DrawRectangle(
+                            new Pen(Color.Red),
+                            rectangle
+                            );
+                    }
+                }
             }
         }
     }

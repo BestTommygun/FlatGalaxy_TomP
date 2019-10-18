@@ -14,7 +14,7 @@ namespace FlatGalaxy.Model.Behaviour
             random = new Random();
         }
 
-        public async override Task<List<CelestialBody>> Collide(CelestialBody celestialBody) //TODO: misschien Collision = nextCollision doen ipv new object()
+        public override List<CelestialBody> Collide(CelestialBody celestialBody)
         {
             List<CelestialBody> explodedRemnants = new List<CelestialBody>();
 
@@ -26,7 +26,8 @@ namespace FlatGalaxy.Model.Behaviour
 
                 while (i < 5)
                 {
-                    double newX = random.NextDouble() * 2 + 0.5; //random number between 0.5 and 2.5
+                    //random number between 0.5 and 2.5
+                    double newX = random.NextDouble() * 2 + 0.5;
                     double newY = random.NextDouble() * 2 + 0.5;
 
                     Astroid remnant = new Astroid()

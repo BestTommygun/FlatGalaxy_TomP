@@ -10,17 +10,31 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 {
     public class NaiveCollision : ICollision
     {
-        public async Task<List<CelestialBody>> Collide(List<CelestialBody> celestialBodies)
+        List<Rectangle> bounds;
+
+        public NaiveCollision()
+        {
+            bounds = new List<Rectangle>();
+            List<Rectangle> rectangles = new List<Rectangle>();
+            bounds.Add(new Rectangle(0, 0, 800, 600));
+        }
+
+        public List<CelestialBody> Collide(List<CelestialBody> celestialBodies)
         {
             List<CelestialBody> returnBodies = celestialBodies.ToList();
 
-           if(celestialBodies.Count > 0)
+            foreach (CelestialBody celestialBody in celestialBodies)
+            {
+                celestialBody.collision.doTodo(celestialBody);
+            }
+
+            if (celestialBodies.Count > 0)
            {
                 var detectedBodies = _detectCollision(celestialBodies);
 
                 if (detectedBodies.Count > 0)
                 {
-                    var collidedBodies = await _Collide(detectedBodies, celestialBodies);
+                    var collidedBodies = _Collide(detectedBodies, celestialBodies);
 
                     foreach (CelestialBody collidedBody in collidedBodies.ToList())
                     {
@@ -39,7 +53,8 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
                     }
                 }
            }
-            return returnBodies;
+
+           return returnBodies;
         }
 
         private List<CelestialBody> _detectCollision(List<CelestialBody> bodies)
@@ -69,18 +84,23 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
             return collidingBodies;
         }
 
-        private async Task<List<CelestialBody>> _Collide(List<CelestialBody> collidingBodies, List<CelestialBody> allBodies)
+        private List<CelestialBody> _Collide(List<CelestialBody> collidingBodies, List<CelestialBody> allBodies)
         {
             List<CelestialBody> returningBodies = allBodies.ToList();
 
             foreach (CelestialBody celestialBody in collidingBodies)
             {
-                var newBodies = await celestialBody.onCollision();
+                List<CelestialBody> newBodies = celestialBody.onCollision();
 
                 returningBodies.AddRange(newBodies);
             }
 
             return returningBodies;
+        }
+
+        public List<Rectangle> GetBounds()
+        {
+            return bounds;
         }
     }
 }

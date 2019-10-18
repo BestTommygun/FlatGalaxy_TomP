@@ -16,13 +16,17 @@ namespace FlatGalaxy_TomP
     public partial class MainView : Form
     {
         public string File { get; set; }
-        public bool HasFile { get; set; }
         public bool isWebFile { get; set; }
-        public bool HasKeyPressed { get; set; }
+        public bool IsQuadTree { get; set; }
         public Keys keyPressed { get; set; }
         public SimulationView simulationView { get; set; }
-        private Dictionary<string, Keys> Keybinds;
+        public List<Rectangle> Rectangles
+        {
+            get { return simulationView.Rectangles; }
+            set { simulationView.Rectangles = value; }
+        }
 
+        private Dictionary<string, Keys> Keybinds;
         private KeyBindingsConfig keyBindingsConfig;
 
         public MainView(Dictionary<string, Keys> keybinds)
@@ -31,6 +35,7 @@ namespace FlatGalaxy_TomP
             KeyPreview = true;
             this.KeyDown += new KeyEventHandler(MainView_KeyDown);
             Keybinds = keybinds;
+            IsQuadTree = false;
         }
 
         public void setBodies(List<CelestialBody> celestialbodies)
@@ -52,7 +57,6 @@ namespace FlatGalaxy_TomP
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 File = openFileDialog1.FileName;
-                HasFile = true;
                 isWebFile = false;
             }
         }
@@ -78,8 +82,12 @@ namespace FlatGalaxy_TomP
             WebFileLoader webFileLoader = new WebFileLoader();
             webFileLoader.ShowDialog();
             File = webFileLoader.webAdress;
-            HasFile = true;
             isWebFile = false;
+        }
+
+        private void enableQuadTreeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IsQuadTree = !IsQuadTree;
         }
     }
 }

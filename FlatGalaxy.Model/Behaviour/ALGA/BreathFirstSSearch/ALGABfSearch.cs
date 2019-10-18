@@ -16,7 +16,10 @@ namespace FlatGalaxy_TomP.Controllers
 
         public Path BreathfirstSearch(List<Vertex> bodies, Vertex root, Vertex goal)
         {
-            Tuple<Vertex, Path> tuple = new Tuple<Vertex, Path>(root, new Path());
+            Path startingPath = new Path();
+            startingPath.add(root);
+
+            Tuple<Vertex, Path> tuple = new Tuple<Vertex, Path>(root, startingPath);
             Queue<Tuple<Vertex, Path>> queue = new Queue<Tuple<Vertex, Path>>();
             queue.Enqueue(tuple);
 

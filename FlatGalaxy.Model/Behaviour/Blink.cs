@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,15 +12,27 @@ namespace FlatGalaxy.Model
     {
         private string originalColour;
 
-        public async override Task<List<CelestialBody>> Collide(CelestialBody celestialBody) //TODO: IT DOESNT FUCKING BLINK
+        public override List<CelestialBody> Collide(CelestialBody celestialBody)
         {
             if (originalColour == null) originalColour = celestialBody.Colour;
 
-            celestialBody.Colour = "Yellow";
-            await Task.Delay(100);
-            celestialBody.Colour = originalColour;
+            int i = 10 - _todos.Count;
 
-            return await base.Collide(celestialBody);
+            while(i > 0)
+            {
+                _todos.Enqueue("yellow");
+                _todos.Enqueue(originalColour);
+                i--;
+            }
+
+            return base.Collide(celestialBody);
+        }
+
+        public override void doTodo(CelestialBody celestialBody)
+        {
+           
+            if(_todos.Count > 0)
+                celestialBody.Colour = _todos.Dequeue();
         }
     }
 }

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace FlatGalaxy_TomP.Controllers.Algorithm
 {
-    public class BFSearch
+    public class BFSearch : IPathingAlgorithm
     {
-        public List<CelestialBody> BreathFirstSearch(List<CelestialBody> bodies, CelestialBody root, CelestialBody goal)
+        public List<CelestialBody> GetPath(List<CelestialBody> bodies, CelestialBody root, CelestialBody goal)
         {
             List<CelestialBody> returnBodies = new List<CelestialBody>();
 
@@ -22,6 +22,7 @@ namespace FlatGalaxy_TomP.Controllers.Algorithm
 
             foreach (CelestialBody body in bodies)
             {
+                body.IsMarked = false;
                 vertices.Add(new Vertex(body.Name, body.Neighbours));
             }
 

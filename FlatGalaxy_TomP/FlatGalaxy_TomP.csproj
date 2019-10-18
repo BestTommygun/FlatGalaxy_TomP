@@ -47,14 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ALGABfSearch.cs" />
     <Compile Include="Controllers\Algorithm\BFSearch.cs" />
+    <Compile Include="Controllers\Algorithm\DijkstraSearch.cs" />
+    <Compile Include="Controllers\Algorithm\IPathingAlgorithm.cs" />
     <Compile Include="Controllers\Builder\CelestialBodyBuilder.cs" />
     <Compile Include="Controllers\Builder\GalaxyBuilder.cs" />
     <Compile Include="Controllers\collisionDetection\ICollision.cs" />
     <Compile Include="Controllers\collisionDetection\NaiveCollision.cs" />
     <Compile Include="Controllers\collisionDetection\QuadTreeCollision.cs" />
-    <Compile Include="Controllers\InputController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\parsing\CSVParser.cs" />
     <Compile Include="Controllers\parsing\IParser.cs" />
