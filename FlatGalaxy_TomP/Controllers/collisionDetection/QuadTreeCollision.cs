@@ -10,7 +10,7 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 {
     public class QuadTreeCollision : ICollision
     {
-        private QuadTree quadTree;
+        private QuadTree _quadTree;
 
         public List<CelestialBody> Collide(List<CelestialBody> celestialBodies)
         {
@@ -27,13 +27,17 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
                 set.Add(body);
             }
 
-            quadTree = new QuadTree(
+            _quadTree = new QuadTree(
                 0,
                 new System.Drawing.Rectangle(0, 0, 800, 600),
-                set);
+                set,
+                12,
+                4);
+            NaiveCollision naiveCollision = new NaiveCollision();
+
             if (celestialBodies.Count > 0)
             {
-                var detectedBodies = quadTree.DetectCollision();
+                var detectedBodies = _quadTree.DetectCollision();
 
                 if (detectedBodies.Count > 0)
                 {
@@ -63,7 +67,7 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
         public List<Rectangle> GetBounds()
         {
             List<Rectangle> bounds = new List<Rectangle>();
-            return quadTree.GetBounds();
+            return _quadTree.GetBounds();
         }
 
         private List<CelestialBody> _Collide(List<CelestialBody> collidingBodies, List<CelestialBody> allBodies)

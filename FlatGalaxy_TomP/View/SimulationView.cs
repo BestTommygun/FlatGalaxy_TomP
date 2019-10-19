@@ -46,16 +46,9 @@ namespace FlatGalaxy_TomP
                 {
                     foreach (string neighbour in body.Neighbours)
                     {
-                        if(body.IsMarked)
-                        {
-                            Console.WriteLine(body.Name + " is marked");
-                        }
-
                         Pen pen = new Pen(Color.Cyan);
                         if (body.IsMarked && bodies[neighbour].IsMarked)
-                        {
                             pen = new Pen(Color.Red);
-                        }
                         e.Graphics.DrawLine(
                             pen,
                             (float)body.X,
@@ -66,21 +59,24 @@ namespace FlatGalaxy_TomP
                     }
                 }
 
-                //draw circles
                 foreach (CelestialBody body in CelestialBodies)
                 {
-                    e.Graphics.FillEllipse(
-                        new SolidBrush(
-                            body.IsMarked  
-                                ? Color.Red
-                                : body.Colour == null || body.Colour.Equals("grey")
-                                    ? Color.Gray 
-                                    : Color.FromName(body.Colour)),
+                    Color test = Color.FromName(body.Colour);
+                    Color penColour = Color.FromName(body.Colour);
+                    if (body.IsMarked)
+                        penColour = Color.Red;
+                    else if (penColour.IsKnownColor)
+                        penColour = Color.FromName(body.Colour);
+                    else
+                        penColour = Color.DarkGray;
+
+                        e.Graphics.FillEllipse(
+                        new SolidBrush(penColour),
                         new RectangleF(
                             (float)(body.X - body.Radius),
                             (float)(body.Y - body.Radius),
-                            (float)body.Radius*2,
-                            (float)body.Radius*2
+                            (float)body.Radius * 2,
+                            (float)body.Radius * 2
                             )
                         );
                 }

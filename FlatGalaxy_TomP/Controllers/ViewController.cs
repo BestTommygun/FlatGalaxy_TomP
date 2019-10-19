@@ -12,7 +12,6 @@ namespace FlatGalaxy_TomP.Controllers
     public class ViewController
     {
         public MainView MainView { get; set; }
-        private Keys Key { get; set; }
 
         public List<Rectangle> bounds {
             get { return MainView.Rectangles; }
@@ -60,11 +59,6 @@ namespace FlatGalaxy_TomP.Controllers
         {
             MainView.setBodies(bodies);
             MainView.Refresh();
-        }
-
-        public bool hasKeyPressed()
-        {
-            return MainView.keyPressed != Keys.None ? true : false;
         }
 
         public string getKeyPressed(Dictionary<string, Keys> keyBindings) //TODO: actually use a pattern for this

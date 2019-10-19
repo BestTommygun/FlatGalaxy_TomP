@@ -38,6 +38,7 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
                 }
                 else
                 {
+                    //headers are not valid
                     throw new FormatException();
                 }
 
@@ -45,17 +46,17 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
                 while (!parser.EndOfData && fileIsValid)
                 {
                     string[] fields = parser.ReadFields();
-                    if (fields.Length == 10)
+                    if (fields.Length == 10) //check if the row filled in all fields
                     {
                         List<string> neighbours = fields[6].Split(',').ToList();
                         parserData.Add(new ParserData()
                         {
                             Name = fields[0],
                             Type = fields[1],
-                            X = Double.Parse(fields[2]),
-                            Y = Double.Parse(fields[3]),
-                            VX = Double.Parse(fields[4]),
-                            VY = Double.Parse(fields[5]),
+                            X = double.Parse(fields[2]),
+                            Y = double.Parse(fields[3]),
+                            VX = double.Parse(fields[4]),
+                            VY = double.Parse(fields[5]),
                             Neighbours = neighbours,
                             Radius = int.Parse(fields[7]),
                             Colour = fields[8],

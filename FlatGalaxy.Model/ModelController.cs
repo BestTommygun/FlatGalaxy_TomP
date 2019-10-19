@@ -48,7 +48,7 @@ namespace FlatGalaxy.Model
                 //random numbers for the new astroid
                 double newVX = random.NextDouble() * 2 + 0.5; //0.5 - 2.5
                 double newVY = random.NextDouble() * 2 + 0.5; //0.5 - 2.5
-                double newR = random.NextDouble() * 2 + 1;    //1 - 3
+                double newR = random.NextDouble() * 4 + 1;    //1 - 5
                 double newX = random.NextDouble() * 800;      // 0 - 800
                 double newY = random.NextDouble() * 600;      // 0 - 600
                 Astroid newAstroid = new Astroid()
@@ -82,7 +82,7 @@ namespace FlatGalaxy.Model
         public void newTimeStamp(DateTime time)
         {
             
-            if(TimeStamps.Count > 10000) //20 minuten
+            if(TimeStamps.Count > 10000) //20 minuten een maximale heap van ruwweg 90mb met het maximale aantal bodies
             {
                 //remove all elements except for the first that exceed 10000
                 var list = TimeStamps.ToList();

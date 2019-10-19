@@ -57,6 +57,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SpeedText);
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "SimulationView";
             this.ResumeLayout(false);
             this.PerformLayout();

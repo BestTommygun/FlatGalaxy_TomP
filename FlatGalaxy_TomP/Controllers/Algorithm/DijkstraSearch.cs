@@ -10,6 +10,13 @@ namespace FlatGalaxy_TomP.Controllers.Algorithm
 {
     public class DijkstraSearch : IPathingAlgorithm
     {
+        /// <summary>
+        /// Finds the shortest path based on X and Y values between 2 CelestialBodies
+        /// </summary>
+        /// <param name="bodies">All the bodies in the simulation</param>
+        /// <param name="root">The starting body</param>
+        /// <param name="goal">The ending body</param>
+        /// <returns>A list off all the bodies it needs to reach goal from root</returns>
         public List<CelestialBody> GetPath(List<CelestialBody> bodies, CelestialBody root, CelestialBody goal)
         {
             List<Node> nodes = new List<Node>();

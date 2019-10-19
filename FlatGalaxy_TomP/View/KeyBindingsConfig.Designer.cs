@@ -37,6 +37,10 @@
             this.SlowerKey = new System.Windows.Forms.Label();
             this.PauseKey = new System.Windows.Forms.Label();
             this.GoBack5Key = new System.Windows.Forms.Label();
+            this.SwitchCollisionsKey = new System.Windows.Forms.Label();
+            this.SwitchCollisionText = new System.Windows.Forms.Label();
+            this.SwitchPathingKey = new System.Windows.Forms.Label();
+            this.SwitchPathingText = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -124,11 +128,53 @@
             this.GoBack5Key.Text = "A";
             this.GoBack5Key.Click += new System.EventHandler(this.GoBack5Key_Click);
             // 
+            // SwitchCollisionsKey
+            // 
+            this.SwitchCollisionsKey.AutoSize = true;
+            this.SwitchCollisionsKey.Location = new System.Drawing.Point(155, 178);
+            this.SwitchCollisionsKey.Name = "SwitchCollisionsKey";
+            this.SwitchCollisionsKey.Size = new System.Drawing.Size(14, 13);
+            this.SwitchCollisionsKey.TabIndex = 10;
+            this.SwitchCollisionsKey.Text = "C";
+            this.SwitchCollisionsKey.Click += new System.EventHandler(this.SwitchCollisionsKey_Click);
+            // 
+            // SwitchCollisionText
+            // 
+            this.SwitchCollisionText.AutoSize = true;
+            this.SwitchCollisionText.Location = new System.Drawing.Point(13, 178);
+            this.SwitchCollisionText.Name = "SwitchCollisionText";
+            this.SwitchCollisionText.Size = new System.Drawing.Size(140, 13);
+            this.SwitchCollisionText.TabIndex = 9;
+            this.SwitchCollisionText.Text = "SWITCH COLLISION TYPE";
+            // 
+            // SwitchPathingKey
+            // 
+            this.SwitchPathingKey.AutoSize = true;
+            this.SwitchPathingKey.Location = new System.Drawing.Point(155, 207);
+            this.SwitchPathingKey.Name = "SwitchPathingKey";
+            this.SwitchPathingKey.Size = new System.Drawing.Size(14, 13);
+            this.SwitchPathingKey.TabIndex = 12;
+            this.SwitchPathingKey.Text = "P";
+            this.SwitchPathingKey.Click += new System.EventHandler(this.SwitchPathingKey_Click);
+            // 
+            // SwitchPathingText
+            // 
+            this.SwitchPathingText.AutoSize = true;
+            this.SwitchPathingText.Location = new System.Drawing.Point(13, 207);
+            this.SwitchPathingText.Name = "SwitchPathingText";
+            this.SwitchPathingText.Size = new System.Drawing.Size(132, 13);
+            this.SwitchPathingText.TabIndex = 11;
+            this.SwitchPathingText.Text = "SWITCH PATHING TYPE";
+            // 
             // KeyBindingsConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.SwitchPathingKey);
+            this.Controls.Add(this.SwitchPathingText);
+            this.Controls.Add(this.SwitchCollisionsKey);
+            this.Controls.Add(this.SwitchCollisionText);
             this.Controls.Add(this.GoBack5Key);
             this.Controls.Add(this.PauseKey);
             this.Controls.Add(this.SlowerKey);
@@ -156,5 +202,9 @@
         private System.Windows.Forms.Label SlowerKey;
         private System.Windows.Forms.Label PauseKey;
         private System.Windows.Forms.Label GoBack5Key;
+        private System.Windows.Forms.Label SwitchCollisionsKey;
+        private System.Windows.Forms.Label SwitchCollisionText;
+        private System.Windows.Forms.Label SwitchPathingKey;
+        private System.Windows.Forms.Label SwitchPathingText;
     }
 }

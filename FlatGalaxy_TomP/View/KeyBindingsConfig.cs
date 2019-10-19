@@ -51,6 +51,17 @@ namespace FlatGalaxy_TomP.View
             toBeChangedLabel = "back";
         }
 
+        private void SwitchCollisionsKey_Click(object sender, EventArgs e)
+        {
+            SwitchCollisionsKey.Text = "Press any key to change the " + KeyBinds["switchCollision"].ToString() + " keybinding...";
+            toBeChangedLabel = "switchCollision";
+        }
+
+        private void SwitchPathingKey_Click(object sender, EventArgs e)
+        {
+            SwitchPathingKey.Text = "Press any key to change the " + KeyBinds["switchPathing"].ToString() + " keybinding...";
+            toBeChangedLabel = "switchPathing";
+        }
         private void Config_KeyDown(object sender, KeyEventArgs e)
         {
             switch (toBeChangedLabel)
@@ -74,6 +85,16 @@ namespace FlatGalaxy_TomP.View
                     KeyBinds["back"] = e.KeyData;
                     toBeChangedLabel = "";
                     GoBack5Key.Text = KeyBinds["back"].ToString();
+                    break;
+                case "switchCollision":
+                    KeyBinds["switchCollision"] = e.KeyData;
+                    toBeChangedLabel = "";
+                    SwitchCollisionsKey.Text = KeyBinds["switchCollision"].ToString();
+                    break;
+                case "switchPathing":
+                    KeyBinds["switchPathing"] = e.KeyData;
+                    toBeChangedLabel = "";
+                    SwitchPathingKey.Text = KeyBinds["switchPathing"].ToString();
                     break;
                 default:
                     toBeChangedLabel = "";

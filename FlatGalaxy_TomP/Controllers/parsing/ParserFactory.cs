@@ -16,12 +16,12 @@ namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
                 string[] splitText = file.Split('.');
                 string fileEnding = splitText.LastOrDefault().Substring(0, 3);
 
-                return Create(fileEnding);
+                return _create(fileEnding);
             }
             else throw new ArgumentNullException();
         }
 
-        IParser Create(string fileEnding)
+        private IParser _create(string fileEnding)
         {
             switch (fileEnding)
             {

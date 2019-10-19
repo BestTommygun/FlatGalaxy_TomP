@@ -1,5 +1,4 @@
 ﻿using FlatGalaxy.Model;
-using FlatGalaxy.Model.BreathFirstSSearch;
 using FlatGalaxy_TomP.Controllers.Algorithm;
 using FlatGalaxy_TomP.Controllers.collisionDetection;
 using FlatGalaxy_TomP_JohanW.Controllers;
@@ -26,15 +25,16 @@ namespace FlatGalaxy_TomP.Controllers
         private IPathingAlgorithm _pathing;
 
         private double SimulationSpeed { get; set; }
-        private bool _containsGalaxy { get; set; }
-        private TimeSpan _minTickTime { get; set; }
+        private bool ContainsGalaxy { get; set; }
+        private TimeSpan MinTickTime { get; set; }
         private bool IsPaused { get; set; }
-        private bool Algorithms = true;
+        private bool debugMode { get; set; }
 
         public MainController()
         {
-            _containsGalaxy = false;
-            _minTickTime = TimeSpan.FromMilliseconds(1000 / 50);
+            debugMode = false;
+            ContainsGalaxy = false;
+            MinTickTime = TimeSpan.FromMilliseconds(1000 / 50);
 
             ParserFactory = new ParserFactory();
             KeyBindings = new Dictionary<string, Keys>();
@@ -44,6 +44,9 @@ namespace FlatGalaxy_TomP.Controllers
             KeyBindings.Add("pause", Keys.Space);
             KeyBindings.Add("faster", Keys.Add);
             KeyBindings.Add("slower", Keys.Subtract);
+
+            //keys for the algorithm assignment
+            KeyBindings.Add("toggleDebugMode", Keys.T);
             KeyBindings.Add("add1", Keys.D1);
             KeyBindings.Add("add2", Keys.D2);
             KeyBindings.Add("add3", Keys.D3);
@@ -61,26 +64,19 @@ namespace FlatGalaxy_TomP.Controllers
         private List<ParserData> loadGalaxy(string file)
         {
             file.ToLower();
+            Stream stream;
+            IParser parser = ParserFactory.returnParser(file);
 
             if (ViewController.isWebFile())
-                return loadLocalGalaxy(file);
+            {
+                WebClient client = new WebClient();
+                stream = client.OpenRead(file);
+            }
             else
-                return loadWebGalaxy(file);
-        }
-
-        private List<ParserData> loadWebGalaxy(string adress)
-        {
-            IParser parser = ParserFactory.returnParser(adress);
-            WebClient client = new WebClient();
-            Stream stream = client.OpenRead(adress);
+            {
+                stream = new FileStream(file, FileMode.Open, FileAccess.Read);
+            }
             return parser.Parse(stream);
-        }
-
-        private List<ParserData> loadLocalGalaxy(string file)
-        {
-            IParser parser = ParserFactory.returnParser(file);
-            FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read);
-            return parser.Parse(fs);
         }
 
         public async void gameLoop()
@@ -89,7 +85,7 @@ namespace FlatGalaxy_TomP.Controllers
             DateTime newTick = DateTime.UtcNow;
             SimulationParams simulationParams = new SimulationParams(new TimeSpan(), new TimeSpan());
             GalaxyBuilder galaxyBuilder = new GalaxyBuilder();
-            _collisionDetection = new NaiveCollision();
+            _collisionDetection = new QuadTreeCollision();
             _pathing = new BFSearch();
             IsPaused = false;
 
@@ -104,7 +100,7 @@ namespace FlatGalaxy_TomP.Controllers
                     ModelController = new ModelController(Galaxy);
 
                     simulationParams.TotalTime = TimeSpan.Zero;
-                    _containsGalaxy = true;
+                    ContainsGalaxy = true;
                     SimulationSpeed = 2;
                     file = null;
 
@@ -113,15 +109,14 @@ namespace FlatGalaxy_TomP.Controllers
                 }
 
                 //simulationLoop
-                while (_containsGalaxy && ViewController.MainView.File == null)
+                while (ContainsGalaxy && ViewController.MainView.File == null)
                 {
                     newTick = DateTime.UtcNow;
 
                     //TODO: check public and private everywhere
                     //TODO: keybindings refactor, blink gedrag werkend krijgen
                     //unit testing is 15% van het punt, urgh
-                    //TODO: dat vage factory refactoring ding gebruik dat PLEASE voor http & local
-                    //TODO: use queue for the blink stuff?
+                    //TODO: dat vage factory refactoring ding gebruik dat PLEASE voor http & local & keybindings & parsers & bodies
 
                     //TODO: ALGA
                     //kortste pad: configureerbare punten in UI?
@@ -130,17 +125,18 @@ namespace FlatGalaxy_TomP.Controllers
                     //TODO: quadtree: kijk eens naar de grote planeten, die colliden bijna nooit doordat maar 1 hok runt
 
 
-                    if (ViewController.hasKeyPressed()) inputControl(ViewController.getKeyPressed(KeyBindings));
+                    inputControl(ViewController.getKeyPressed(KeyBindings));
 
                     simulationParams.SetDelta(newTick - oldTick, SimulationSpeed);
                     ModelController.runGameTick(simulationParams);
 
                     //collision related code
                     ModelController.CurMap.celestialBodies =  _collisionDetection.Collide(ModelController.CurMap.celestialBodies);
-                    ViewController.bounds = _collisionDetection.GetBounds();
 
-                    if (Algorithms) //this should only be enabled for the algorithm assignment
+                    if (debugMode) //this should only be enabled for the algorithm assignment, but it is a cool showcase of the program
                     {
+                        ViewController.bounds = _collisionDetection.GetBounds();
+
                         List<CelestialBody> sortedList = ModelController.CurMap.celestialBodies
                                                             .OrderByDescending(x => x.Radius).ToList()
                                                             .Where(n => n.Name != null).ToList();
@@ -153,33 +149,30 @@ namespace FlatGalaxy_TomP.Controllers
                             );
 
                     }
+                    else
+                    {
+                        ViewController.bounds = null;
+                        ModelController.CurMap.celestialBodies.All(cb => { cb.IsMarked = false; return true; });
+                    }
 
                     ViewController.drawFrame(ModelController.CurMap.celestialBodies);
 
-                    if (DateTime.UtcNow - newTick < _minTickTime)
+                    if (DateTime.UtcNow - newTick < MinTickTime)
                     {
-                        await Task.Delay(_minTickTime);
+                        await Task.Delay(MinTickTime);
                     }
                     oldTick = newTick;
 
                     while (IsPaused && ViewController.MainView.File == null) //pause loop
                     {
-                        await Task.Delay(_minTickTime);
-                        if (ViewController.hasKeyPressed()) inputControl(ViewController.getKeyPressed(KeyBindings));
+                        await Task.Delay(MinTickTime);
+                        inputControl(ViewController.getKeyPressed(KeyBindings));
 
                         oldTick = DateTime.UtcNow;
                     }
                 }
-                await Task.Delay(_minTickTime);
+                await Task.Delay(MinTickTime);
             }
-        }
-
-        private void checkCollisionType()
-        {
-            if (ViewController.IsQuadTree && _collisionDetection.GetType() != typeof(QuadTreeCollision))
-                _collisionDetection = new QuadTreeCollision();
-            if (!ViewController.IsQuadTree && _collisionDetection.GetType() != typeof(NaiveCollision))
-                _collisionDetection = new NaiveCollision();
         }
 
         private void inputControl(string key)
@@ -201,6 +194,9 @@ namespace FlatGalaxy_TomP.Controllers
                     break;
                 case "back":
                     ModelController.mapBackFiveSeconds();
+                    break;
+                case "toggleDebugMode":
+                    debugMode = !debugMode;
                     break;
                 case "add1":
                     ModelController.newAstroids(1);

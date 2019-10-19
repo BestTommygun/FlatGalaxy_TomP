@@ -10,10 +10,15 @@ namespace FlatGalaxy_TomP.Controllers.Algorithm
 {
     public class BFSearch : IPathingAlgorithm
     {
+        /// <summary>
+        /// Converts the CelestialBodies to Node elements and passes this to the breathfirstsearch class
+        /// </summary>
+        /// <param name="bodies">A list of all the bodies in the simulations</param>
+        /// <param name="root">The starting body</param>
+        /// <param name="goal">The ending body</param>
+        /// <returns>An adjusted list of all elements in the simulation</returns>
         public List<CelestialBody> GetPath(List<CelestialBody> bodies, CelestialBody root, CelestialBody goal)
         {
-            List<CelestialBody> returnBodies = new List<CelestialBody>();
-
             ALGABfSearch bfSearch = new ALGABfSearch();
             List<Vertex> vertices = new List<Vertex>();
 
@@ -25,10 +30,10 @@ namespace FlatGalaxy_TomP.Controllers.Algorithm
                 body.IsMarked = false;
                 vertices.Add(new Vertex(body.Name, body.Neighbours));
             }
-
+            
             Path path = bfSearch.BreathfirstSearch(vertices, Vroot, Vgoal);
-            returnBodies = bodies.ToList();
 
+            //Mark the bodies based on the path
             foreach (Vertex vertex in path.getPath())
             {
                 foreach (CelestialBody celestialBody in bodies)
@@ -37,6 +42,7 @@ namespace FlatGalaxy_TomP.Controllers.Algorithm
                         celestialBody.IsMarked = true;
                 }
             }
+
             return bodies;
         }
     }

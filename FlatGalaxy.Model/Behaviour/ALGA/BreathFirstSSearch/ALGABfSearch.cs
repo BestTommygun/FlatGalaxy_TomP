@@ -10,18 +10,21 @@ namespace FlatGalaxy_TomP.Controllers
 {
     public class ALGABfSearch
     {
-        //returns the path taken and null if no path leads to the goal
-        //vertex = node
-        //edge = pad
-
-        public Path BreathfirstSearch(List<Vertex> bodies, Vertex root, Vertex goal)
+        /// <summary>
+        /// Finds the shortest path based on the edges off a vertex
+        /// </summary>
+        /// <param name="bodies">A list off all the vertices in the simulation</param>
+        /// <param name="root">The starting vertice</param>
+        /// <param name="goal">The ending vertice</param>
+        /// <returns>A Path object which contains all the vertices that the search needs to reach goal from root</returns>
+        public Path BreathfirstSearch(List<Vertex> vertices, Vertex root, Vertex goal)
         {
             Path startingPath = new Path();
             startingPath.add(root);
 
-            Tuple<Vertex, Path> tuple = new Tuple<Vertex, Path>(root, startingPath);
+            Tuple<Vertex, Path> startingTuple = new Tuple<Vertex, Path>(root, startingPath);
             Queue<Tuple<Vertex, Path>> queue = new Queue<Tuple<Vertex, Path>>();
-            queue.Enqueue(tuple);
+            queue.Enqueue(startingTuple);
 
             while(queue.Count > 0)
             {
@@ -37,7 +40,7 @@ namespace FlatGalaxy_TomP.Controllers
                     if (!path.getPath().Select(p => p.Name).Contains(vertex))
                     {
                         //visited this vertex
-                        Vertex body = bodies.Where(b => b.Name == vertex).FirstOrDefault();
+                        Vertex body = vertices.Where(b => b.Name == vertex).FirstOrDefault();
                         Path newPath = new Path(path);
                         newPath.add(body);
                         queue.Enqueue(new Tuple<Vertex, Path>(body, newPath));

@@ -23,10 +23,5 @@ namespace FlatGalaxy.Model.Behaviour.ALGA.Dijkstra
             this.Y = y;
             Weight = double.MaxValue;
         }
-
-        Tuple<double, double> getPosition()
-        {
-            return new Tuple<double, double>(X, Y);
-        }
     }
 }

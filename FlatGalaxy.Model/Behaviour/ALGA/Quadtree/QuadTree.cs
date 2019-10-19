@@ -10,17 +10,19 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 {
     public class QuadTree
     {
-        private readonly int MAX_ENTITIES = 4;
-        private readonly int MAX_LEVELS = 5;
-        private readonly int level = 0;
-        private readonly Rectangle bounds;
-        private readonly HashSet<CelestialBody> entityList;
-        private HashSet<QuadTree> leafs;
+        private readonly int MAX_ENTITIES;
+        private readonly int MAX_LEVELS;
+        private readonly int LEVEL;
+        private readonly Rectangle BOUNDS;
+        private HashSet<CelestialBody> entityList;
+        private HashSet<QuadTree> quadTrees;
 
-        public QuadTree(int level, Rectangle bounds, HashSet<CelestialBody> entities)
+        public QuadTree(int level, Rectangle bounds, HashSet<CelestialBody> entities, int maxLevels, int maxEntities)
         {
-            this.level = level;
-            this.bounds = bounds;
+            this.LEVEL = level;
+            this.BOUNDS = bounds;
+            this.MAX_LEVELS = maxLevels;
+            this.MAX_ENTITIES = maxEntities;
 
             entityList = new HashSet<CelestialBody>();
             foreach (CelestialBody entity in entities)
@@ -28,30 +30,30 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
                 if (isWithinBounds(entity))
                     entityList.Add(entity);
             }
-            if (entityList.Count > MAX_ENTITIES && level < MAX_LEVELS)
+            if (entityList.Count > MAX_ENTITIES && LEVEL < MAX_LEVELS)
                 split();
         }
 
         public void split()
         {
-            int width = bounds.Width / 2;
-            int height = bounds.Height / 2;
-            int xPos = bounds.X;
-            int yPos = bounds.Y;
+            int width = BOUNDS.Width / 2;
+            int height = BOUNDS.Height / 2;
+            int xPos = BOUNDS.X;
+            int yPos = BOUNDS.Y;
 
-            leafs = new HashSet<QuadTree>();
+            quadTrees = new HashSet<QuadTree>();
             Point location = new Point(xPos, yPos);
-            leafs.Add(new QuadTree(level + 1, new Rectangle(xPos, yPos, width, height), entityList));
-            leafs.Add(new QuadTree(level + 1, new Rectangle(xPos + width, yPos, width, height), entityList));
-            leafs.Add(new QuadTree(level + 1, new Rectangle(xPos, yPos + height, width, height), entityList));
-            leafs.Add(new QuadTree(level + 1, new Rectangle(xPos + width, yPos + height, width, height), entityList));
+            quadTrees.Add(new QuadTree(LEVEL + 1, new Rectangle(xPos, yPos, width, height),                  entityList, MAX_LEVELS, MAX_ENTITIES));
+            quadTrees.Add(new QuadTree(LEVEL + 1, new Rectangle(xPos + width, yPos, width, height),          entityList, MAX_LEVELS, MAX_ENTITIES));
+            quadTrees.Add(new QuadTree(LEVEL + 1, new Rectangle(xPos, yPos + height, width, height),         entityList, MAX_LEVELS, MAX_ENTITIES));
+            quadTrees.Add(new QuadTree(LEVEL + 1, new Rectangle(xPos + width, yPos + height, width, height), entityList, MAX_LEVELS, MAX_ENTITIES));
         }
 
         public HashSet<CelestialBody> DetectCollision()
         {
             HashSet<CelestialBody> collidingBodies = new HashSet<CelestialBody>();
 
-            if (leafs == null)
+            if (quadTrees == null)
             {
                 foreach (CelestialBody curBody in entityList)
                 {
@@ -76,9 +78,9 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
             }
             else
             {
-                foreach (QuadTree leaf in leafs)
+                foreach (QuadTree quadTree in quadTrees)
                 {
-                    var bodies = leaf.DetectCollision();
+                    var bodies = quadTree.DetectCollision();
 
                     foreach (CelestialBody body in bodies)
                     {
@@ -92,22 +94,22 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 
         private bool isWithinBounds(CelestialBody body)
         {
-            if (bounds.Contains((int)body.X, (int)body.Y)) return true;
+            if (BOUNDS.Contains((int)body.X, (int)body.Y)) return true;
             return false;
         }
 
         public List<Rectangle> GetBounds()
         {
             List<Rectangle> bounds = new List<Rectangle>();
-            if(leafs == null)
+            if(quadTrees == null)
             {
-                bounds.Add(this.bounds);
+                bounds.Add(this.BOUNDS);
             }
             else
             {
-                foreach (QuadTree leaf in leafs)
+                foreach (QuadTree quadTree in quadTrees)
                 {
-                    bounds.AddRange(leaf.GetBounds());
+                    bounds.AddRange(quadTree.GetBounds());
                 }
             }
             return bounds;

@@ -10,13 +10,13 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 {
     public class NaiveCollision : ICollision
     {
-        List<Rectangle> bounds;
+        private List<Rectangle> _bounds;
 
         public NaiveCollision()
         {
-            bounds = new List<Rectangle>();
+            _bounds = new List<Rectangle>();
             List<Rectangle> rectangles = new List<Rectangle>();
-            bounds.Add(new Rectangle(0, 0, 800, 600));
+            _bounds.Add(new Rectangle(0, 0, 800, 600));
         }
 
         public List<CelestialBody> Collide(List<CelestialBody> celestialBodies)
@@ -59,7 +59,7 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 
         private List<CelestialBody> _detectCollision(List<CelestialBody> bodies)
         {
-            List<CelestialBody> collidingBodies = new List<CelestialBody>();
+            HashSet<CelestialBody> collidingBodies = new HashSet<CelestialBody>();
 
             foreach (CelestialBody curBody in bodies)
             {
@@ -81,7 +81,7 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
                     }
                 }
             }
-            return collidingBodies;
+            return collidingBodies.ToList();
         }
 
         private List<CelestialBody> _Collide(List<CelestialBody> collidingBodies, List<CelestialBody> allBodies)
@@ -100,7 +100,7 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 
         public List<Rectangle> GetBounds()
         {
-            return bounds;
+            return _bounds;
         }
     }
 }
