@@ -8,8 +8,8 @@ namespace FlatGalaxy.Model.BreathFirstSSearch
     {
         public Vertex(string name, List<string> vertices)
         {
-            this.Name = name;
-            this.Vertices = vertices;
+            Name = name;
+            Vertices = vertices;
         }
 
         public string Name { get; set; }

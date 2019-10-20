@@ -113,10 +113,9 @@ namespace FlatGalaxy_TomP.Controllers
                 {
                     newTick = DateTime.UtcNow;
 
-                    //TODO: check public and private everywhere
-                    //TODO: keybindings refactor, blink gedrag werkend krijgen
-                    //unit testing is 15% van het punt, urgh
-                    //TODO: dat vage factory refactoring ding gebruik dat PLEASE voor http & local & keybindings & parsers & 
+                    //TODO: check public and private everywhere (blijft hier tot dpa deadline
+                    //unit testing is 15% van het punt, voeg ze voor dpa toe
+                    //TODO: gebruik reflection factory voor behaviours
 
                     inputControl(ViewController.getKeyPressed());
 

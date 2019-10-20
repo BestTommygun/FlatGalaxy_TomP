@@ -30,6 +30,7 @@ namespace FlatGalaxy.Model.Behaviour.ALGA.Dijkstra
             returnNodes.Add(root);
             returnNodes.Add(goal);
             List<Node> todo = new List<Node>();
+
             while (goalNode.From != null)
             {
                 //Add all the from nodes to the todo list

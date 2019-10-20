@@ -12,60 +12,29 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
     {
         private List<Rectangle> _bounds;
 
-        public NaiveCollision()
+        public NaiveCollision() //creates a Rectangle to represent the bounds of the algorithm (entire screen)
         {
             _bounds = new List<Rectangle>();
             List<Rectangle> rectangles = new List<Rectangle>();
             _bounds.Add(new Rectangle(0, 0, 800, 600));
         }
 
-        public List<CelestialBody> Collide(List<CelestialBody> celestialBodies)
+        public List<CelestialBody> Collide(List<CelestialBody> bodies)
         {
-            List<CelestialBody> returnBodies = celestialBodies.ToList();
-
-            foreach (CelestialBody celestialBody in celestialBodies)
+            if (bodies.Count > 0)
             {
-                celestialBody.collision?.doTodo(celestialBody);
-            }
-
-            if (celestialBodies.Count > 0)
-            {
-                var detectedBodies = _detectCollision(celestialBodies);
-
-                if (detectedBodies.Count > 0)
+                //do the todo queue
+                foreach (CelestialBody celestialBody in bodies)
                 {
-                    var collidedBodies = _Collide(detectedBodies, celestialBodies);
-
-                    foreach (CelestialBody collidedBody in collidedBodies.ToList())
-                    {
-                        int collidedBodyIndex = returnBodies.IndexOf(collidedBody);
-
-                        if (collidedBodyIndex == -1)
-                            returnBodies.Add(collidedBody);
-                        else
-                        {
-                            if (collidedBody.ShouldDissapear)
-                                returnBodies.Remove(collidedBody);
-                            else
-                                returnBodies[collidedBodyIndex] = collidedBody;
-                            
-                        }
-                    }
+                    celestialBody.collision?.doTodo(celestialBody);
                 }
-           }
 
-           return returnBodies;
-        }
+                //detect for collisions (all elements with all elements)
+                HashSet<CelestialBody> collidingBodies = new HashSet<CelestialBody>();
 
-        private List<CelestialBody> _detectCollision(List<CelestialBody> bodies)
-        {
-            HashSet<CelestialBody> collidingBodies = new HashSet<CelestialBody>();
-
-            foreach (CelestialBody curBody in bodies)
-            {
-                foreach (CelestialBody nextBody in bodies)
+                foreach (CelestialBody curBody in bodies)
                 {
-                    if (curBody != nextBody)
+                    foreach (CelestialBody nextBody in bodies.Where(b => b != curBody))
                     {
                         double deltaX = curBody.X - nextBody.X;
                         double deltaY = curBody.Y - nextBody.Y;
@@ -73,30 +42,19 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
                         double sumRad = curBody.Radius + nextBody.Radius;
                         if (distSq <= sumRad)
                         {
-                            if(!collidingBodies.Contains(curBody))
+                            if (!collidingBodies.Contains(curBody))
                                 collidingBodies.Add(curBody);
-                            if(!collidingBodies.Contains(nextBody))
-                                collidingBodies.Add(nextBody);
                         }
                     }
                 }
-            }
-            return collidingBodies.ToList();
-        }
-
-        private List<CelestialBody> _Collide(List<CelestialBody> collidingBodies, List<CelestialBody> allBodies)
-        {
-            List<CelestialBody> returningBodies = allBodies.ToList();
-
-            foreach (CelestialBody celestialBody in collidingBodies)
-            {
-                returningBodies.AddRange(celestialBody.onCollision());
+                //merge the colliding bodies with the existing bodies, ignore elements that have ShouldDissapear set to true
+                return collidingBodies.SelectMany(b => b.onCollision()).Where(b => !b.ShouldDissapear).Union(bodies.Where(b => !collidingBodies.Contains(b))).ToList();
             }
 
-            return returningBodies;
+            return bodies;
         }
 
-        public List<Rectangle> GetBounds()
+        public List<Rectangle> GetBounds() //returns the rectangle representing the bounds of the algorithm (the entire screen)
         {
             return _bounds;
         }

@@ -19,8 +19,8 @@ namespace FlatGalaxy.Model.Behaviour.ALGA.Dijkstra
         {
             Name = name;
             connectedNodes = nodes;
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
             Weight = double.MaxValue;
         }
     }

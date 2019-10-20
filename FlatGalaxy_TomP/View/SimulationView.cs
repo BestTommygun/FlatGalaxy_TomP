@@ -61,9 +61,12 @@ namespace FlatGalaxy_TomP
 
                 foreach (CelestialBody body in CelestialBodies)
                 {
-                    Color penColour = Color.FromName(body.Colour ?? "DarkGray");
+                    //draw planets & astroids
+                    Color penColour = Color.FromName(body.Colour);
                     if (body.IsMarked)
                         penColour = Color.Red;
+                    if (!penColour.IsKnownColor)
+                        penColour = Color.DarkGray;
 
                         e.Graphics.FillEllipse(
                         new SolidBrush(penColour),
@@ -78,6 +81,7 @@ namespace FlatGalaxy_TomP
 
                 if(Rectangles?.Count > 0)
                 {
+                    //draw rectangles for collision bounds
                     foreach (Rectangle rectangle in Rectangles)
                     {
                         e.Graphics.DrawRectangle(
