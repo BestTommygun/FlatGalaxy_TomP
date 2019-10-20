@@ -46,8 +46,8 @@ namespace FlatGalaxy.Model
             while (amount > 0)
             {
                 //random numbers for the new astroid
-                double newVX = random.NextDouble() * 2 + 0.5; //0.5 - 2.5
-                double newVY = random.NextDouble() * 2 + 0.5; //0.5 - 2.5
+                double newVX = random.NextDouble() * 8 - 4; //-4 - 4
+                double newVY = random.NextDouble() * 8 - 4; //-4 - 4
                 double newR = random.NextDouble() * 4 + 1;    //1 - 5
                 double newX = random.NextDouble() * 800;      // 0 - 800
                 double newY = random.NextDouble() * 600;      // 0 - 600

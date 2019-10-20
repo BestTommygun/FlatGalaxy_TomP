@@ -61,14 +61,9 @@ namespace FlatGalaxy_TomP
 
                 foreach (CelestialBody body in CelestialBodies)
                 {
-                    Color test = Color.FromName(body.Colour);
-                    Color penColour = Color.FromName(body.Colour);
+                    Color penColour = Color.FromName(body.Colour ?? "DarkGray");
                     if (body.IsMarked)
                         penColour = Color.Red;
-                    else if (penColour.IsKnownColor)
-                        penColour = Color.FromName(body.Colour);
-                    else
-                        penColour = Color.DarkGray;
 
                         e.Graphics.FillEllipse(
                         new SolidBrush(penColour),
@@ -81,7 +76,7 @@ namespace FlatGalaxy_TomP
                         );
                 }
 
-                if(Rectangles != null && Rectangles.Count > 0)
+                if(Rectangles?.Count > 0)
                 {
                     foreach (Rectangle rectangle in Rectangles)
                     {

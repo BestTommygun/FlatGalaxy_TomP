@@ -58,6 +58,7 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\parsing\CSVParser.cs" />
     <Compile Include="Controllers\parsing\IParser.cs" />
+    <Compile Include="Controllers\parsing\ParserAttribute.cs" />
     <Compile Include="Controllers\parsing\ParserData.cs" />
     <Compile Include="Controllers\parsing\ParserFactory.cs" />
     <Compile Include="Controllers\parsing\XMLParser.cs" />
@@ -128,6 +129,5 @@
       <Name>FlatGalaxy.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

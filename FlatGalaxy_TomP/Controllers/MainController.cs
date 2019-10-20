@@ -17,7 +17,7 @@ namespace FlatGalaxy_TomP.Controllers
 {
     public class MainController
     {
-        private Dictionary<string, Keys> KeyBindings { get; set; }
+        private Dictionary<string, Keys> KeyBindings { get; }
         private ViewController ViewController { get; set; }
         private ModelController ModelController { get; set; }
         private ParserFactory ParserFactory { get; set; }
@@ -93,9 +93,9 @@ namespace FlatGalaxy_TomP.Controllers
             {
                 var file = ViewController.hasFile();
 
-                if (file != null && file.Length > 0)
+                if (file?.Length > 0)
                 {
-                    Map Galaxy = galaxyBuilder.buildGalaxy(loadLocalGalaxy(file));
+                    Map Galaxy = galaxyBuilder.buildGalaxy(loadGalaxy(file));
 
                     ModelController = new ModelController(Galaxy);
 
@@ -116,16 +116,9 @@ namespace FlatGalaxy_TomP.Controllers
                     //TODO: check public and private everywhere
                     //TODO: keybindings refactor, blink gedrag werkend krijgen
                     //unit testing is 15% van het punt, urgh
-                    //TODO: dat vage factory refactoring ding gebruik dat PLEASE voor http & local & keybindings & parsers & bodies
+                    //TODO: dat vage factory refactoring ding gebruik dat PLEASE voor http & local & keybindings & parsers & 
 
-                    //TODO: ALGA
-                    //kortste pad: configureerbare punten in UI?
-                    //Goedkoopste pad: configureerbaar in UI?
-                    //QuadTree: houd rekening met randgevallen, 
-                    //TODO: quadtree: kijk eens naar de grote planeten, die colliden bijna nooit doordat maar 1 hok runt
-
-
-                    inputControl(ViewController.getKeyPressed(KeyBindings));
+                    inputControl(ViewController.getKeyPressed());
 
                     simulationParams.SetDelta(newTick - oldTick, SimulationSpeed);
                     ModelController.runGameTick(simulationParams);
@@ -166,7 +159,7 @@ namespace FlatGalaxy_TomP.Controllers
                     while (IsPaused && ViewController.MainView.File == null) //pause loop
                     {
                         await Task.Delay(MinTickTime);
-                        inputControl(ViewController.getKeyPressed(KeyBindings));
+                        inputControl(ViewController.getKeyPressed());
 
                         oldTick = DateTime.UtcNow;
                     }

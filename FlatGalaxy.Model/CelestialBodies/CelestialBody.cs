@@ -37,7 +37,7 @@ namespace FlatGalaxy.Model
 
         public CollisionComponent collision { get; set; }
 
-        public bool ShouldDissapear = false;
+        public bool ShouldDissapear { get; set; } = false;
 
         public abstract object Clone();
 

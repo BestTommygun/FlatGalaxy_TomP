@@ -1,4 +1,5 @@
 ﻿using FlatGalaxy.Model;
+using FlatGalaxy_TomP.Controllers;
 using FlatGalaxy_TomP.View;
 using System;
 using System.Collections.Generic;
@@ -18,24 +19,26 @@ namespace FlatGalaxy_TomP
         public string File { get; set; }
         public bool isWebFile { get; set; }
         public bool IsQuadTree { get; set; }
-        public Keys keyPressed { get; set; }
         public SimulationView simulationView { get; set; }
+        private ViewController _viewController;
         public List<Rectangle> Rectangles
         {
             get { return simulationView.Rectangles; }
             set { simulationView.Rectangles = value; }
         }
 
-        private Dictionary<string, Keys> Keybinds;
         private KeyBindingsConfig keyBindingsConfig;
 
-        public MainView(Dictionary<string, Keys> keybinds)
+        public delegate void KeyPressedHandler(Keys keys);
+        public event KeyPressedHandler KeyPressed;
+
+        public MainView(ViewController controller)
         {
             InitializeComponent();
             KeyPreview = true;
-            this.KeyDown += new KeyEventHandler(MainView_KeyDown);
-            Keybinds = keybinds;
+            this.KeyDown += (object sender, KeyEventArgs args) => KeyPressed(args.KeyData);
             IsQuadTree = false;
+            _viewController = controller;
         }
 
         public void setBodies(List<CelestialBody> celestialbodies)
@@ -66,14 +69,9 @@ namespace FlatGalaxy_TomP
             simulationView = (SimulationView)sender;
         }
 
-        private void MainView_KeyDown(object sender, KeyEventArgs e)
-        {
-            keyPressed = e.KeyData;
-        }
-
         private void controlsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            keyBindingsConfig = new KeyBindingsConfig(Keybinds);
+            keyBindingsConfig = new KeyBindingsConfig(_viewController.KeyBindings);
             keyBindingsConfig.Show();
         }
 
@@ -82,7 +80,7 @@ namespace FlatGalaxy_TomP
             WebFileLoader webFileLoader = new WebFileLoader();
             webFileLoader.ShowDialog();
             File = webFileLoader.webAdress;
-            isWebFile = false;
+            isWebFile = true;
         }
 
         private void enableQuadTreeToolStripMenuItem_Click(object sender, EventArgs e)

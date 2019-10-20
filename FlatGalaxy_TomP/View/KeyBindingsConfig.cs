@@ -12,7 +12,7 @@ namespace FlatGalaxy_TomP.View
 {
     public partial class KeyBindingsConfig : Form
     {
-        public Dictionary<string, Keys> KeyBinds { get; set; }
+        public Dictionary<string, Keys> KeyBinds { get; }
         private string toBeChangedLabel;
 
         public KeyBindingsConfig(Dictionary<string, Keys> keyBinds)

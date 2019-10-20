@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
 {
-    class CSVParser : IParser
+    [Parser(".csv")]
+    public class CSVParser : IParser
     {
         public List<ParserData> Parse(Stream file)
         {

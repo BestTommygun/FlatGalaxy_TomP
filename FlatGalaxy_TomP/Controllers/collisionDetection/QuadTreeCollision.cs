@@ -12,76 +12,60 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
     {
         private QuadTree _quadTree;
 
-        public List<CelestialBody> Collide(List<CelestialBody> celestialBodies)
+        public List<CelestialBody> Collide(List<CelestialBody> bodies)
         {
-            foreach (CelestialBody celestialBody in celestialBodies)
+            if (bodies.Count > 0)
             {
-                celestialBody.collision.doTodo(celestialBody);
-            }
-
-            List<CelestialBody> returnBodies = celestialBodies.ToList();
-            HashSet<CelestialBody> set = new HashSet<CelestialBody>();
-
-            foreach (CelestialBody body in celestialBodies)
-            {
-                set.Add(body);
-            }
-
-            _quadTree = new QuadTree(
-                0,
-                new System.Drawing.Rectangle(0, 0, 800, 600),
-                set,
-                12,
-                4);
-            NaiveCollision naiveCollision = new NaiveCollision();
-
-            if (celestialBodies.Count > 0)
-            {
-                var detectedBodies = _quadTree.DetectCollision();
-
-                if (detectedBodies.Count > 0)
+                double maxRadius = 0;
+                foreach (CelestialBody celestialBody in bodies)
                 {
-                    var collidedBodies = _Collide(detectedBodies.ToList(), celestialBodies);
-
-                    foreach (CelestialBody collidedBody in collidedBodies.ToList())
+                    celestialBody.collision?.doTodo(celestialBody);
+                    if(celestialBody.Radius > maxRadius)
                     {
-                        int collidedBodyIndex = returnBodies.IndexOf(collidedBody);
+                        maxRadius = celestialBody.Radius;
+                    }
+                }
 
-                        if (collidedBodyIndex == -1)
-                            returnBodies.Add(collidedBody);
-                        else
-                        {
-                            if (collidedBody.ShouldDissapear)
-                                returnBodies.Remove(collidedBody);
-                            else
-                                returnBodies[collidedBodyIndex] = collidedBody;
+                _quadTree = new QuadTree(
+                    new System.Drawing.Rectangle(0, 0, 800, 600),
+                    bodies,
+                    7,
+                    4);
 
+                HashSet<CelestialBody> collidingBodies = new HashSet<CelestialBody>();
+
+                foreach(var body in bodies)
+                {
+                    foreach(var collidingBody in 
+                        _quadTree.BodiesInRange(
+                            (int)(body.X-(body.Radius+maxRadius)),
+                            (int)(body.Y-(body.Radius+maxRadius)),
+                            (int)(body.X+(body.Radius+maxRadius)),
+                            (int)(body.Y+(body.Radius+maxRadius))
+                        ).Where(b => b != body))
+                    {
+                        double deltaX = body.X - collidingBody.X;
+                        double deltaY = body.Y - collidingBody.Y;
+                        double distSq = Math.Pow((Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2)), 0.5);
+                        double sumRad = body.Radius + collidingBody.Radius;
+                        if (distSq <= sumRad)
+                        { 
+                            if (!collidingBodies.Contains(collidingBody))
+                            {
+                                collidingBodies.Add(collidingBody);
+                            }
                         }
                     }
                 }
+                return collidingBodies.SelectMany(b => b.onCollision()).Where(b => !b.ShouldDissapear).Union(bodies.Where(b => !collidingBodies.Contains(b))).ToList();
             }
-
-            return returnBodies;
+            return bodies;
         }
 
         public List<Rectangle> GetBounds()
         {
             List<Rectangle> bounds = new List<Rectangle>();
             return _quadTree.GetBounds();
-        }
-
-        private List<CelestialBody> _Collide(List<CelestialBody> collidingBodies, List<CelestialBody> allBodies)
-        {
-            List<CelestialBody> returningBodies = allBodies.ToList();
-
-            foreach (CelestialBody celestialBody in collidingBodies)
-            {
-                List<CelestialBody> newBodies = celestialBody.onCollision();
-
-                returningBodies.AddRange(newBodies);
-            }
-
-            return returningBodies;
         }
     }
 }

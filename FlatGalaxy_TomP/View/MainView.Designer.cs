@@ -37,8 +37,8 @@
             this.algorithmConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shortestPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cheapestPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.enableQuadTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.simulationView1 = new FlatGalaxy_TomP.SimulationView();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -69,7 +69,7 @@
             this.webToolStripMenuItem,
             this.localToolStripMenuItem});
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadToolStripMenuItem.Text = "Load";
             // 
             // webToolStripMenuItem
@@ -106,30 +106,31 @@
             // shortestPathToolStripMenuItem
             // 
             this.shortestPathToolStripMenuItem.Name = "shortestPathToolStripMenuItem";
-            this.shortestPathToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.shortestPathToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.shortestPathToolStripMenuItem.Text = "Shortest path";
             // 
             // cheapestPathToolStripMenuItem
             // 
             this.cheapestPathToolStripMenuItem.Name = "cheapestPathToolStripMenuItem";
-            this.cheapestPathToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cheapestPathToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.cheapestPathToolStripMenuItem.Text = "Cheapest path";
+            // 
+            // enableQuadTreeToolStripMenuItem
+            // 
+            this.enableQuadTreeToolStripMenuItem.Name = "enableQuadTreeToolStripMenuItem";
+            this.enableQuadTreeToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.enableQuadTreeToolStripMenuItem.Text = "ToggleQuadTree";
+            this.enableQuadTreeToolStripMenuItem.Click += new System.EventHandler(this.enableQuadTreeToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // enableQuadTreeToolStripMenuItem
-            // 
-            this.enableQuadTreeToolStripMenuItem.Name = "enableQuadTreeToolStripMenuItem";
-            this.enableQuadTreeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.enableQuadTreeToolStripMenuItem.Text = "ToggleQuadTree";
-            this.enableQuadTreeToolStripMenuItem.Click += new System.EventHandler(this.enableQuadTreeToolStripMenuItem_Click);
-            // 
             // simulationView1
             // 
             this.simulationView1.CelestialBodies = null;
             this.simulationView1.Location = new System.Drawing.Point(0, 27);
+            this.simulationView1.Margin = new System.Windows.Forms.Padding(0);
             this.simulationView1.MinimumSize = new System.Drawing.Size(800, 600);
             this.simulationView1.Name = "simulationView1";
             this.simulationView1.Rectangles = null;

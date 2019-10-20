@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28307.779
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatGalaxy_TomP", "FlatGalaxy_TomP\FlatGalaxy_TomP.csproj", "{22728247-FBC3-4338-AD25-48D5D44CF205}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatGalaxy.Model", "FlatGalaxy.Model\FlatGalaxy.Model.csproj", "{DCB3FEAE-57FF-4C16-A5E7-29235151C890}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlatGalaxy.Model", "FlatGalaxy.Model\FlatGalaxy.Model.csproj", "{DCB3FEAE-57FF-4C16-A5E7-29235151C890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2D01901A-82CF-436A-A4A8-B2A9C0576583}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DCB3FEAE-57FF-4C16-A5E7-29235151C890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCB3FEAE-57FF-4C16-A5E7-29235151C890}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCB3FEAE-57FF-4C16-A5E7-29235151C890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D01901A-82CF-436A-A4A8-B2A9C0576583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D01901A-82CF-436A-A4A8-B2A9C0576583}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D01901A-82CF-436A-A4A8-B2A9C0576583}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D01901A-82CF-436A-A4A8-B2A9C0576583}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,6 +10,7 @@ using System.Xml.Linq;
 
 namespace FlatGalaxy_TomP_JohanW.Controllers.parsing
 {
+    [Parser(".xml")]
     public class XMLParser : IParser
     {
         public List<ParserData> Parse(Stream file)

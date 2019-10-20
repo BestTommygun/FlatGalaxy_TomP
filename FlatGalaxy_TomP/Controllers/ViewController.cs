@@ -12,7 +12,9 @@ namespace FlatGalaxy_TomP.Controllers
     public class ViewController
     {
         public MainView MainView { get; set; }
-
+        public Dictionary<string, Keys> KeyBindings { get; }
+        private Queue<Keys> KeysPressed;
+        
         public List<Rectangle> bounds {
             get { return MainView.Rectangles; }
             set { MainView.Rectangles = value; }
@@ -23,10 +25,15 @@ namespace FlatGalaxy_TomP.Controllers
             set { MainView.IsQuadTree = value; }
         }
 
-        public ViewController(Dictionary<string, Keys> KeyBindings)
+        
+        public ViewController(Dictionary<string, Keys> keyBindings)
         {
-            MainView = new MainView(KeyBindings);
+            KeyBindings = keyBindings;
             var bounds = Screen.GetBounds(new Point(100, 100));
+            KeyBindings = keyBindings;
+            KeysPressed = new Queue<Keys>();
+            MainView = new MainView(this);
+            MainView.KeyPressed += (Keys keys) => KeysPressed.Enqueue(keys);
         }
 
         public void runView()
@@ -41,7 +48,7 @@ namespace FlatGalaxy_TomP.Controllers
 
         public string hasFile()
         {
-            if (MainView.File != null && MainView.File.Length > 0) return MainView.File;
+            if (MainView.File?.Length > 0) return MainView.File;
             return null;
         }
 
@@ -61,14 +68,10 @@ namespace FlatGalaxy_TomP.Controllers
             MainView.Refresh();
         }
 
-        public string getKeyPressed(Dictionary<string, Keys> keyBindings) //TODO: actually use a pattern for this
+        public string getKeyPressed()
         {
-            Keys returnKey = MainView.keyPressed;
-            MainView.keyPressed = Keys.None;
-            string chosenKey = keyBindings.SingleOrDefault(b => b.Value == returnKey).Key;
-            if(chosenKey != null)
-                return chosenKey;
-            return "none";
+            Keys returnKey = KeysPressed.Count > 0 ? KeysPressed.Dequeue() : Keys.None;
+            return KeyBindings.SingleOrDefault(b => b.Value == returnKey).Key;
         }
     }
 }

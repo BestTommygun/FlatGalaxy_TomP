@@ -25,11 +25,11 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 
             foreach (CelestialBody celestialBody in celestialBodies)
             {
-                celestialBody.collision.doTodo(celestialBody);
+                celestialBody.collision?.doTodo(celestialBody);
             }
 
             if (celestialBodies.Count > 0)
-           {
+            {
                 var detectedBodies = _detectCollision(celestialBodies);
 
                 if (detectedBodies.Count > 0)
@@ -67,10 +67,10 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
                 {
                     if (curBody != nextBody)
                     {
-                        int deltaX = (int)curBody.X - (int)nextBody.X;
-                        int deltaY = (int)curBody.Y - (int)nextBody.Y;
-                        int distSq = (int)Math.Sqrt((int)Math.Pow(deltaX, 2) + (int)Math.Pow(deltaY, 2));
-                        int sumRad = (int)curBody.Radius + (int)nextBody.Radius;
+                        double deltaX = curBody.X - nextBody.X;
+                        double deltaY = curBody.Y - nextBody.Y;
+                        double distSq = Math.Pow((Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2)), 0.5);
+                        double sumRad = curBody.Radius + nextBody.Radius;
                         if (distSq <= sumRad)
                         {
                             if(!collidingBodies.Contains(curBody))
@@ -90,9 +90,7 @@ namespace FlatGalaxy_TomP.Controllers.collisionDetection
 
             foreach (CelestialBody celestialBody in collidingBodies)
             {
-                List<CelestialBody> newBodies = celestialBody.onCollision();
-
-                returningBodies.AddRange(newBodies);
+                returningBodies.AddRange(celestialBody.onCollision());
             }
 
             return returningBodies;
